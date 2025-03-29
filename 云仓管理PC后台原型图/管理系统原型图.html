@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小明超市云仓管理系统PC后台原型图</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .page-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #1890ff;
+        }
+        .screen {
+            width: 100%;
+            height: 800px;
+            margin-bottom: 50px;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        .screen-title {
+            background: #f7f7f7;
+            padding: 10px;
+            border-bottom: 1px solid #e8e8e8;
+            font-weight: bold;
+            text-align: center;
+        }
+        .screen-nav {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .screen-nav a {
+            display: block;
+            margin: 5px 0;
+            color: #1890ff;
+            text-decoration: none;
+        }
+        .screen-nav a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 登录页样式 */
+        .login-container {
+            width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .login-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #1890ff;
+        }
+        .login-form {
+            margin-top: 20px;
+        }
+        .form-item {
+            margin-bottom: 20px;
+        }
+        .form-item label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-item input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #1890ff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .login-btn:hover {
+            background: #40a9ff;
+        }
+        .login-footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .login-footer a {
+            color: #1890ff;
+            text-decoration: none;
+        }
+        
+        /* 整体布局样式 */
+        .layout {
+            display: flex;
+            height: 100%;
+        }
+        .sidebar {
+            width: 220px;
+            background: #001529;
+            color: #fff;
+            height: 100%;
+            overflow-y: auto;
+        }
+        .sidebar-header {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            background: #002140;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .sidebar-menu {
+            padding: 10px 0;
+        }
+        .menu-item {
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.65);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .menu-item i {
+            margin-right: 10px;
+        }
+        .menu-item:hover, .menu-item.active {
+            color: #fff;
+            background: #1890ff;
+        }
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+        .header {
+            height: 64px;
+            background: #fff;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        .header-left i {
+            margin-right: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+        .user-info {
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #1890ff;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f0f2f5;
+        }
+        
+        /* 控制台样式 */
+        .card {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card-header {
+            padding: 15px;
+            border-bottom: 1px solid #e8e8e8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .data-overview {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -10px;
+        }
+        .data-card {
+            flex: 1;
+            min-width: 220px;
+            margin: 10px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+        .data-title {
+            color: #8c8c8c;
+            font-size: 14px;
+        }
+        .data-value {
+            margin-top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+        }
+        .data-footer {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #8c8c8c;
+        }
+        .data-rate {
+            color: #f5222d;
+        }
+        .data-rate.up {
+            color: #52c41a;
+        }
+        .chart-container {
+            height: 300px;
+            padding: 20px;
+        }
+        .todo-list {
+            margin-top: 10px;
+        }
+        .todo-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .todo-item:last-child {
+            border-bottom: none;
+        }
+        .todo-item-title {
+            flex: 1;
+        }
+        .todo-item-date {
+            color: #8c8c8c;
+        }
+        .progress-bar {
+            height: 6px;
+            background: #f5f5f5;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .progress-inner {
+            height: 100%;
+            background: #1890ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">小明超市云仓管理系统PC后台原型图</h1>
+        
+        <div class="screen-nav">
+            <a href="#login">登录页</a>
+            <a href="#dashboard">控制台</a>
+            <a href="#inventory">库存管理</a>
+            <a href="#order">订单管理</a>
+            <a href="#picking">拣货系统</a>
+            <a href="#delivery">配送管理</a>
+            <a href="#driver">司机管理</a>
+            <a href="#report">数据报表</a>
+            <a href="#settings">系统设置</a>
+        </div>
+        
+        <!-- 登录页 -->
+        <div id="login" class="screen">
+            <div class="screen-title">登录页</div>
+            <div class="login-container">
+                <div class="login-title">小明超市云仓管理系统</div>
+                <div class="login-form">
+                    <div class="form-item">
+                        <label>用户名</label>
+                        <input type="text" placeholder="请输入用户名">
+                    </div>
+                    <div class="form-item">
+                        <label>密码</label>
+                        <input type="password" placeholder="请输入密码">
+                    </div>
+                    <button class="login-btn">登录</button>
+                </div>
+                <div class="login-footer">
+                    <a href="#">忘记密码？</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 控制台 -->
+        <div id="dashboard" class="screen">
+            <div class="screen-title">控制台</div>
+            <div class="layout">
+                <div class="sidebar">
+                    <div class="sidebar-header">小明超市云仓</div>
+                    <div class="sidebar-menu">
+                        <div class="menu-item active">
+                            <i>📊</i>
+                            <span>控制台</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>📦</i>
+                            <span>库存管理</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>📝</i>
+                            <span>订单管理</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>🔍</i>
+                            <span>拣货系统</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>🚚</i>
+                            <span>配送管理</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>👨‍💼</i>
+                            <span>司机管理</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>📈</i>
+                            <span>数据报表</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>⚙️</i>
+                            <span>系统设置</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="header">
+                        <div class="header-left">
+                            <i>≡</i>
+                            <span>控制台</span>
+                        </div>
+                        <div class="header-right">
+                            <i>🔔</i>
+                            <div class="user-info">
+                                <div class="avatar">管</div>
+                                <span>管理员</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-content">
+                        <div class="data-overview">
+                            <div class="data-card">
+                                <div class="data-title">今日订单数</div>
+                                <div class="data-value">256</div>
+                                <div class="data-footer">
+                                    <span class="data-rate up">↑12%</span>
+                                    <span>较昨日</span>
+                                </div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-title">今日销售额</div>
+                                <div class="data-value">¥28,560</div>
+                                <div class="data-footer">
+                                    <span class="data-rate up">↑8%</span>
+                                    <span>较昨日</span>
+                                </div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-title">待配送订单</div>
+                                <div class="data-value">48</div>
+                                <div class="data-footer">
+                                    <span class="data-rate">↓5%</span>
+                                    <span>较昨日</span>
+                                </div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-title">库存预警商品</div>
+                                <div class="data-value">12</div>
+                                <div class="data-footer">
+                                    <span class="data-rate">↓2</span>
+                                    <span>较昨日</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">销售趋势</div>
+                            </div>
+                            <div class="chart-container">
+                                <!-- 这里是图表区域的示意图 -->
+                                <div style="width: 100%; height: 100%; background: linear-gradient(180deg, rgba(24,144,255,0.2) 0%, rgba(24,144,255,0) 100%); position: relative;">
+                                    <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: #8c8c8c;">销售趋势图表区域</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 20px;">
+                            <div class="card" style="flex: 1;">
+                                <div class="card-header">
+                                    <div class="card-title">待处理事项</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="todo-list">
+                                        <div class="todo-item">
+                                            <div class="todo-item-title">商品库存不足预警</div>
+                                            <div class="todo-item-date">刚刚</div>
+                                        </div>
+                                        <div class="todo-item">
+                                            <div class="todo-item-title">司机人手不足预警</div>
+                                            <div class="todo-item-date">10分钟前</div>
+                                        </div>
+                                        <div class="todo-item">
+                                            <div class="todo-item-title">订单配送延迟提醒</div>
+                                            <div class="todo-item-date">30分钟前</div>
+                                        </div>
+                                        <div class="todo-item">
+                                            <div class="todo-item-title">系统每日数据备份</div>
+                                            <div class="todo-item-date">1小时前</div>
+                                        </div>
+                                        <div class="todo-item">
+                                            <div class="todo-item-title">月度销售报表生成</div>
+                                            <div class="todo-item-date">2小时前</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card" style="flex: 1;">
+                                <div class="card-header">
+                                    <div class="card-title">任务完成情况</div>
+                                </div>
+                                <div class="card-body">
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                            <span>今日订单处理</span>
+                                            <span>85%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-inner" style="width: 85%;"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-top: 20px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                            <span>库存盘点</span>
+                                            <span>70%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-inner" style="width: 70%;"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-top: 20px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                            <span>配送任务完成</span>
+                                            <span>92%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-inner" style="width: 92%;"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-top: 20px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                            <span>司机在线率</span>
+                                            <span>78%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-inner" style="width: 78%;"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-top: 20px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                            <span>系统稳定性</span>
+                                            <span>99%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-inner" style="width: 99%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 库存管理 -->
+        <div id="inventory" class="screen">
+            <div class="screen-title">库存管理</div>
+            <div class="layout">
+                <div class="sidebar">
+                    <div class="sidebar-header">小明超市云仓</div>
+                    <div class="sidebar-menu">
+                        <div class="menu-item">
+                            <i>📊</i>
+                            <span>控制台</span>
+                        </div>
+                        <div class="menu-item active">
+                            <i>📦</i>
+                            <span>库存管理</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>📝</i>
+                            <span>订单管理</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>🔍</i>
+                            <span>拣货系统</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>🚚</i>
+                            <span>配送管理</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>👨‍💼</i>
+                            <span>司机管理</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>📈</i>
+                            <span>数据报表</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>⚙️</i>
+                            <span>系统设置</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="header">
+                        <div class="header-left">
+                            <i>≡</i>
+                            <span>库存管理</span>
+                        </div>
+                        <div class="header-right">
+                            <i>🔔</i>
+                            <div class="user-info">
+                                <div class="avatar">管</div>
+                                <span>管理员</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-content">
+                        <!-- 库存管理搜索和操作栏 -->
+                        <div class="card" style="padding: 15px;">
+                            <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    <input type="text" placeholder="搜索商品编码/名称" style="padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px; width: 220px;">
+                                    <select style="padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px; width: 150px;">
+                                        <option>所有分类</option>
+                                        <option>生鲜食品</option>
+                                        <option>日用百货</option>
+                                        <option>酒水饮料</option>
+                                        <option>零食糖果</option>
+                                    </select>
+                                    <select style="padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px; width: 150px;">
+                                        <option>所有库区</option>
+                                        <option>A区</option>
+                                        <option>B区</option>
+                                        <option>C区</option>
+                                        <option>D区</option>
+                                    </select>
+                                    <button style="padding: 8px 16px; background: #1890ff; color: #fff; border: none; border-radius: 4px; cursor: pointer;">搜索</button>
+                                </div>
+                                <div>
+                                    <button style="padding: 8px 16px; background: #fff; color: #1890ff; border: 1px solid #1890ff; border-radius: 4px; cursor: pointer; margin-right: 10px;">导出</button>
+                                    <button style="padding: 8px 16px; background: #1890ff; color: #fff; border: none; border-radius: 4px; cursor: pointer;">添加商品</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 库存状态概览 -->
+                        <div class="data-overview">
+                            <div class="data-card">
+                                <div class="data-title">总库存商品</div>
+                                <div class="data-value">1,258</div>
+                                <div class="data-footer">
+                                    <span class="data-rate up">↑23</span>
+                                    <span>本月新增</span>
+                                </div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-title">库存商品总价值</div>
+                                <div class="data-value">¥452,680</div>
+                                <div class="data-footer">
+                                    <span class="data-rate up">↑5.2%</span>
+                                    <span>较上月</span>
+                                </div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-title">库存预警商品</div>
+                                <div class="data-value">12</div>
+                                <div class="data-footer">
+                                    <span class="data-rate">↓3</span>
+                                    <span>较上周</span>
+                                </div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-title">即将过期商品</div>
+                                <div class="data-value">8</div>
+                                <div class="data-footer">
+                                    <span class="data-rate up">↑2</span>
+                                    <span>较昨日</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 库存列表 -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">商品库存列表</div>
+                                <div>
+                                    <button style="padding: 4px 10px; background: transparent; color: #1890ff; border: none; cursor: pointer;">刷新</button>
+                                    <button style="padding: 4px 10px; background: transparent; color: #1890ff; border: none; cursor: pointer;">列设置</button>
+                                </div>
+                            </div>
+                            <div style="overflow-x: auto;">
+                                <table style="width: 100%; border-collapse: collapse; min-width: 800px;">
+                                    <thead>
+                                        <tr style="background: #fafafa;">
+                                            <th style="padding: 12px 8px; text-align: left; border-bottom: 1px solid #f0f0f0;">商品编码</th>
+                                            <th style="padding: 12px 8px; text-align: left; border-bottom: 1px solid #f0f0f0;">商品名称</th>
+                                            <th style="padding: 12px 8px; text-align: left; border-bottom: 1px solid #f0f0f0;">分类</th>
+                                            <th style="padding: 12px 8px; text-align: left; border-bottom: 1px solid #f0f0f0;">规格</th>
+                                            <th style="padding: 12px 8px; text-align: right; border-bottom: 1px solid #f0f0f0;">库存数量</th>
+                                            <th style="padding: 12px 8px; text-align: right; border-bottom: 1px solid #f0f0f0;">库存金额</th>
+                                            <th style="padding: 12px 8px; text-align: left; border-bottom: 1px solid #f0f0f0;">库存状态</th>
+                                            <th style="padding: 12px 8px; text-align: center; border-bottom: 1px solid #f0f0f0;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">SP10001</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">有机蔬菜礼盒</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">生鲜食品</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">5kg/箱</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">120</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">¥9,600</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <span style="padding: 2px 8px; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 2px; color: #52c41a;">正常</span>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: center;">
+                                                <a href="#" style="color: #1890ff; text-decoration: none; margin-right: 10px;">查看</a>
+                                                <a href="#" style="color: #1890ff; text-decoration: none;">调整</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">SP10002</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">进口牛奶</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">酒水饮料</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">1L*12盒/箱</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">45</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">¥5,850</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <span style="padding: 2px 8px; background: #fff7e6; border: 1px solid #ffd591; border-radius: 2px; color: #fa8c16;">预警</span>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: center;">
+                                                <a href="#" style="color: #1890ff; text-decoration: none; margin-right: 10px;">查看</a>
+                                                <a href="#" style="color: #1890ff; text-decoration: none;">调整</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">SP10003</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">原味薯片</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">零食糖果</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">100g*24包/箱</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">78</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">¥3,120</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <span style="padding: 2px 8px; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 2px; color: #52c41a;">正常</span>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: center;">
+                                                <a href="#" style="color: #1890ff; text-decoration: none; margin-right: 10px;">查看</a>
+                                                <a href="#" style="color: #1890ff; text-decoration: none;">调整</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">SP10004</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">厨房清洁剂</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">日用百货</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">500ml*20瓶/箱</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">32</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">¥2,880</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <span style="padding: 2px 8px; background: #fff7e6; border: 1px solid #ffd591; border-radius: 2px; color: #fa8c16;">预警</span>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: center;">
+                                                <a href="#" style="color: #1890ff; text-decoration: none; margin-right: 10px;">查看</a>
+                                                <a href="#" style="color: #1890ff; text-decoration: none;">调整</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">SP10005</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">苹果</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">生鲜食品</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">10kg/箱</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">85</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">¥8,500</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <span style="padding: 2px 8px; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 2px; color: #52c41a;">正常</span>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: center;">
+                                                <a href="#" style="color: #1890ff; text-decoration: none; margin-right: 10px;">查看</a>
+                                                <a href="#" style="color: #1890ff; text-decoration: none;">调整</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    共 <span style="font-weight: bold;">1,258</span> 条记录，每页显示 <select style="padding: 5px; border: 1px solid #d9d9d9; border-radius: 4px;">
+                                        <option>10</option>
+                                        <option selected>20</option>
+                                        <option>50</option>
+                                        <option>100</option>
+                                    </select> 条
+                                </div>
+                                <div style="display: flex; gap: 5px;">
+                                    <button style="padding: 5px 10px; border: 1px solid #d9d9d9; background: #fff; border-radius: 4px; cursor: pointer;">上一页</button>
+                                    <button style="padding: 5px 10px; border: 1px solid #1890ff; background: #1890ff; color: #fff; border-radius: 4px; cursor: pointer;">1</button>
+                                    <button style="padding: 5px 10px; border: 1px solid #d9d9d9; background: #fff; border-radius: 4px; cursor: pointer;">2</button>
+                                    <button style="padding: 5px 10px; border: 1px solid #d9d9d9; background: #fff; border-radius: 4px; cursor: pointer;">3</button>
+                                    <button style="padding: 5px 10px; border: 1px solid #d9d9d9; background: #fff; border-radius: 4px; cursor: pointer;">...</button>
+                                    <button style="padding: 5px 10px; border: 1px solid #d9d9d9; background: #fff; border-radius: 4px; cursor: pointer;">63</button>
+                                    <button style="padding: 5px 10px; border: 1px solid #d9d9d9; background: #fff; border-radius: 4px; cursor: pointer;">下一页</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 订单管理 -->
+        <div id="order" class="screen">
+            <div class="screen-title">订单管理</div>
+            <div class="layout">
+                <div class="sidebar">
+                    <div class="sidebar-header">小明超市云仓</div>
+                    <div class="sidebar-menu">
+                        <div class="menu-item">
+                            <i>📊</i>
+                            <span>控制台</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>📦</i>
+                            <span>库存管理</span>
+                        </div>
+                        <div class="menu-item active">
+                            <i>📝</i>
+                            <span>订单管理</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>🔍</i>
+                            <span>拣货系统</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>🚚</i>
+                            <span>配送管理</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>👨‍💼</i>
+                            <span>司机管理</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>📈</i>
+                            <span>数据报表</span>
+                        </div>
+                        <div class="menu-item">
+                            <i>⚙️</i>
+                            <span>系统设置</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="header">
+                        <div class="header-left">
+                            <i>≡</i>
+                            <span>订单管理</span>
+                        </div>
+                        <div class="header-right">
+                            <i>🔔</i>
+                            <div class="user-info">
+                                <div class="avatar">管</div>
+                                <span>管理员</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-content">
+                        <!-- 订单标签页 -->
+                        <div style="background: #fff; border-radius: 4px; margin-bottom: 20px;">
+                            <div style="display: flex; border-bottom: 1px solid #f0f0f0;">
+                                <div style="padding: 15px 20px; border-bottom: 2px solid #1890ff; color: #1890ff; font-weight: bold; cursor: pointer;">全部订单</div>
+                                <div style="padding: 15px 20px; cursor: pointer;">待处理</div>
+                                <div style="padding: 15px 20px; cursor: pointer;">拣货中</div>
+                                <div style="padding: 15px 20px; cursor: pointer;">待配送</div>
+                                <div style="padding: 15px 20px; cursor: pointer;">配送中</div>
+                                <div style="padding: 15px 20px; cursor: pointer;">已完成</div>
+                                <div style="padding: 15px 20px; cursor: pointer;">已取消</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 订单搜索和操作栏 -->
+                        <div class="card" style="padding: 15px; margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    <input type="text" placeholder="订单号/门店名称" style="padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px; width: 220px;">
+                                    <div style="display: flex; align-items: center; gap: 5px;">
+                                        <span>下单时间：</span>
+                                        <input type="date" style="padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px; width: 150px;">
+                                        <span>至</span>
+                                        <input type="date" style="padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px; width: 150px;">
+                                    </div>
+                                    <button style="padding: 8px 16px; background: #1890ff; color: #fff; border: none; border-radius: 4px; cursor: pointer;">搜索</button>
+                                    <button style="padding: 8px 16px; background: transparent; color: #1890ff; border: none; cursor: pointer;">重置</button>
+                                </div>
+                                <div>
+                                    <button style="padding: 8px 16px; background: #fff; color: #1890ff; border: 1px solid #1890ff; border-radius: 4px; cursor: pointer; margin-right: 10px;">导出订单</button>
+                                    <button style="padding: 8px 16px; background: #1890ff; color: #fff; border: none; border-radius: 4px; cursor: pointer;">批量操作</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 订单状态概览 -->
+                        <div class="data-overview">
+                            <div class="data-card">
+                                <div class="data-title">今日订单总数</div>
+                                <div class="data-value">256</div>
+                                <div class="data-footer">
+                                    <span class="data-rate up">↑15%</span>
+                                    <span>较昨日</span>
+                                </div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-title">今日订单总额</div>
+                                <div class="data-value">¥28,560</div>
+                                <div class="data-footer">
+                                    <span class="data-rate up">↑8%</span>
+                                    <span>较昨日</span>
+                                </div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-title">待处理订单</div>
+                                <div class="data-value">32</div>
+                                <div class="data-footer">
+                                    <span class="data-rate">↓5</span>
+                                    <span>较昨日</span>
+                                </div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-title">订单完成率</div>
+                                <div class="data-value">98.3%</div>
+                                <div class="data-footer">
+                                    <span class="data-rate up">↑0.5%</span>
+                                    <span>较昨日</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 订单列表 -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">订单列表</div>
+                                <div>
+                                    <button style="padding: 4px 10px; background: transparent; color: #1890ff; border: none; cursor: pointer;">刷新</button>
+                                    <button style="padding: 4px 10px; background: transparent; color: #1890ff; border: none; cursor: pointer;">列设置</button>
+                                </div>
+                            </div>
+                            <div style="overflow-x: auto;">
+                                <table style="width: 100%; border-collapse: collapse; min-width: 800px;">
+                                    <thead>
+                                        <tr style="background: #fafafa;">
+                                            <th style="padding: 12px 8px; text-align: left; border-bottom: 1px solid #f0f0f0;">
+                                                <input type="checkbox" style="margin-right: 5px;">订单号
+                                            </th>
+                                            <th style="padding: 12px 8px; text-align: left; border-bottom: 1px solid #f0f0f0;">门店信息</th>
+                                            <th style="padding: 12px 8px; text-align: left; border-bottom: 1px solid #f0f0f0;">下单时间</th>
+                                            <th style="padding: 12px 8px; text-align: right; border-bottom: 1px solid #f0f0f0;">商品数量</th>
+                                            <th style="padding: 12px 8px; text-align: right; border-bottom: 1px solid #f0f0f0;">订单金额</th>
+                                            <th style="padding: 12px 8px; text-align: left; border-bottom: 1px solid #f0f0f0;">订单状态</th>
+                                            <th style="padding: 12px 8px; text-align: center; border-bottom: 1px solid #f0f0f0;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <input type="checkbox" style="margin-right: 5px;">OD202304110001
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <div>小明超市-新城店</div>
+                                                <div style="color: #8c8c8c; font-size: 12px;">王经理 13800138001</div>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">2023-04-11 09:15:28</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">28件</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">¥3,652.50</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <span style="padding: 2px 8px; background: #e6f7ff; border: 1px solid #91d5ff; border-radius: 2px; color: #1890ff;">待处理</span>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: center;">
+                                                <a href="#" style="color: #1890ff; text-decoration: none; margin-right: 10px;">详情</a>
+                                                <a href="#" style="color: #1890ff; text-decoration: none;">处理</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <input type="checkbox" style="margin-right: 5px;">OD202304110002
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <div>小明超市-西湖店</div>
+                                                <div style="color: #8c8c8c; font-size: 12px;">李经理 13800138002</div>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">2023-04-11 09:22:15</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">15件</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">¥1,856.00</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <span style="padding: 2px 8px; background: #fff7e6; border: 1px solid #ffd591; border-radius: 2px; color: #fa8c16;">拣货中</span>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: center;">
+                                                <a href="#" style="color: #1890ff; text-decoration: none; margin-right: 10px;">详情</a>
+                                                <a href="#" style="color: #1890ff; text-decoration: none;">跟踪</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <input type="checkbox" style="margin-right: 5px;">OD202304110003
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <div>小明超市-江南店</div>
+                                                <div style="color: #8c8c8c; font-size: 12px;">赵经理 13800138003</div>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">2023-04-11 09:30:45</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">32件</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">¥4,821.50</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <span style="padding: 2px 8px; background: #e6fffb; border: 1px solid #87e8de; border-radius: 2px; color: #13c2c2;">待配送</span>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: center;">
+                                                <a href="#" style="color: #1890ff; text-decoration: none; margin-right: 10px;">详情</a>
+                                                <a href="#" style="color: #1890ff; text-decoration: none;">分配</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <input type="checkbox" style="margin-right: 5px;">OD202304110004
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <div>小明超市-东湖店</div>
+                                                <div style="color: #8c8c8c; font-size: 12px;">张经理 13800138004</div>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">2023-04-11 09:45:22</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">18件</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">¥2,356.30</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <span style="padding: 2px 8px; background: #f9f0ff; border: 1px solid #d3adf7; border-radius: 2px; color: #722ed1;">配送中</span>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: center;">
+                                                <a href="#" style="color: #1890ff; text-decoration: none; margin-right: 10px;">详情</a>
+                                                <a href="#" style="color: #1890ff; text-decoration: none;">跟踪</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <input type="checkbox" style="margin-right: 5px;">OD202304110005
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <div>小明超市-北城店</div>
+                                                <div style="color: #8c8c8c; font-size: 12px;">陈经理 13800138005</div>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">2023-04-11 08:15:46</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">25件</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: right;">¥3,210.80</td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0;">
+                                                <span style="padding: 2px 8px; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 2px; color: #52c41a;">已完成</span>
+                                            </td>
+                                            <td style="padding: 12px 8px; border-bottom: 1px solid #f0f0f0; text-align: center;">
+                                                <a href="#" style="color: #1890ff; text-decoration: none; margin-right: 10px;">详情</a>
+                                                <a href="#" style="color: #1890ff; text-decoration: none;">评价</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    共 <span style="font-weight: bold;">256</span> 条记录，每页显示 <select style="padding: 5px; border: 1px solid #d9d9d9; border-radius: 4px;">
+                                        <option>10</option>
+                                        <option selected>20</option>
+                                        <option>50</option>
+                                        <option>100</option>
+                                    </select> 条
+                                </div>
+                                <div style="display: flex; gap: 5px;">
+                                    <button style="padding: 5px 10px; border: 1px solid #d9d9d9; background: #fff; border-radius: 4px; cursor: pointer;">上一页</button>
+                                    <button style="padding: 5px 10px; border: 1px solid #1890ff; background: #1890ff; color: #fff; border-radius: 4px; cursor: pointer;">1</button>
+                                    <button style="padding: 5px 10px; border: 1px solid #d9d9d9; background: #fff; border-radius: 4px; cursor: pointer;">2</button>
+                                    <button style="padding: 5px 10px; border: 1px solid #d9d9d9; background: #fff; border-radius: 4px; cursor: pointer;">3</button>
+                                    <button style="padding: 5px 10px; border: 1px solid #d9d9d9; background: #fff; border-radius: 4px; cursor: pointer;">...</button>
+                                    <button style="padding: 5px 10px; border: 1px solid #d9d9d9; background: #fff; border-radius: 4px; cursor: pointer;">13</button>
+                                    <button style="padding: 5px 10px; border: 1px solid #d9d9d9; background: #fff; border-radius: 4px; cursor: pointer;">下一页</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 这里将会添加更多页面 -->
+        
+    </div>
+</body>
+</html> 
