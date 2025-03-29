@@ -1,0 +1,4233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>小明超市云仓配送系统 - 司机端APP完整原型图</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        :root {
+            --primary-color: #1989fa;
+            --primary-light: #e6f3ff;
+            --success-color: #07c160;
+            --warning-color: #ff976a;
+            --danger-color: #ee0a24;
+            --info-color: #909399;
+            --text-color: #333333;
+            --text-secondary: #666666;
+            --text-light: #999999;
+            --border-color: #ebedf0;
+            --bg-color: #f7f8fa;
+            --card-shadow: 0 2px 12px rgba(100, 101, 102, 0.08);
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        
+        .prototype-container {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .screen-container {
+            width: 360px;
+            height: 720px;
+            background-color: white;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--card-shadow);
+            border: 10px solid #333;
+            margin-bottom: 40px;
+        }
+        
+        .screen-title {
+            text-align: center;
+            font-size: 16px;
+            margin-top: 10px;
+            margin-bottom: -10px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        
+        .screen {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 状态栏 */
+        .status-bar {
+            height: 30px;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            font-size: 12px;
+            color: white;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            height: 44px;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            position: relative;
+        }
+        
+        .navbar-title {
+            font-size: 18px;
+            font-weight: 500;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .navbar-left, .navbar-right {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .back-icon {
+            font-size: 20px;
+        }
+        
+        /* 内容区域 */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            padding-bottom: 60px;
+        }
+        
+        /* 标签栏 */
+        .tab-bar {
+            height: 50px;
+            display: flex;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: white;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .tab-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 12px;
+        }
+        
+        .tab-icon {
+            font-size: 24px;
+            margin-bottom: 2px;
+        }
+        
+        .tab-item.active {
+            color: var(--primary-color);
+        }
+        
+        /* 卡片组件 */
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        /* 按钮组件 */
+        .btn {
+            height: 44px;
+            border-radius: 4px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            outline: none;
+            margin-bottom: 12px;
+            transition: opacity 0.2s;
+            cursor: pointer;
+        }
+        
+        .btn:active {
+            opacity: 0.8;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-default {
+            background-color: #f5f5f5;
+            color: var(--text-color);
+            border: 1px solid #ddd;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        
+        /* 输入框组件 */
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+        
+        .input-field {
+            width: 100%;
+            height: 44px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0 12px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .input-field:focus {
+            border-color: var(--primary-color);
+        }
+        
+        /* 场景特定样式 */
+        /* 登录页样式 */
+        .login-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 0 20px;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-top: 80px;
+            margin-bottom: 60px;
+        }
+        
+        .app-logo {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary-color);
+            border-radius: 16px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+        }
+        
+        .app-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        
+        .app-slogan {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+        
+        .login-form {
+            flex: 1;
+        }
+        
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+        
+        /* 首页/订单大厅样式 */
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e0f2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        .user-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .user-rating {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .status-toggle {
+            margin-left: auto;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border-radius: 15px;
+            padding: 4px 10px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .toggle-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            margin-right: 5px;
+        }
+        
+        .income-card {
+            background: linear-gradient(135deg, var(--primary-color), #39a9ff);
+            color: white;
+        }
+        
+        .income-title {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .income-amount {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .income-detail {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .filter-bar {
+            display: flex;
+            overflow-x: auto;
+            margin-bottom: 15px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .filter-bar::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .filter-item {
+            flex-shrink: 0;
+            padding: 6px 12px;
+            background-color: #f0f9ff;
+            color: var(--primary-color);
+            border-radius: 15px;
+            margin-right: 8px;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+        
+        .filter-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* 订单卡片样式 */
+        .order-card {
+            position: relative;
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .order-type {
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 12px;
+            border-radius: 3px;
+            color: white;
+            background-color: var(--primary-color);
+            margin-right: 5px;
+        }
+        
+        .order-type.urgent {
+            background-color: var(--danger-color);
+        }
+        
+        .order-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--danger-color);
+        }
+        
+        .store-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .store-icon {
+            margin-right: 5px;
+            color: var(--text-light);
+        }
+        
+        .store-name {
+            font-weight: bold;
+            font-size: 15px;
+        }
+        
+        .order-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .info-icon {
+            margin-right: 4px;
+            font-size: 16px;
+            color: var(--text-light);
+        }
+        
+        .route-info {
+            display: flex;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+        
+        .route-point {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .point-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .start-point .point-icon {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+        
+        .end-point .point-icon {
+            background-color: #ffe7e7;
+            color: var(--danger-color);
+        }
+        
+        .point-name {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .route-line {
+            height: 1px;
+            flex: 2;
+            background: repeating-linear-gradient(90deg, #ddd, #ddd 4px, transparent 4px, transparent 8px);
+            margin: 0 5px;
+            position: relative;
+            top: -12px;
+        }
+        
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .time-info {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .grab-btn {
+            height: 36px;
+            padding: 0 15px;
+            border-radius: 18px;
+            font-size: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .grab-btn.urgent {
+            background-color: var(--danger-color);
+        }
+        
+        /* 订单详情页样式 */
+        .order-status {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .status-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .status-label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .status-value {
+            font-size: 14px;
+            padding: 2px 8px;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border-radius: 10px;
+        }
+        
+        .status-deadline {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .section-title {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            margin-right: 5px;
+            font-size: 18px;
+        }
+        
+        .info-list {
+            margin-bottom: 15px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: var(--text-secondary);
+        }
+        
+        .info-value {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
+        .highlight {
+            color: var(--danger-color);
+        }
+        
+        .address-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .address-card.delivery {
+            border-left-color: var(--success-color);
+        }
+        
+        .address-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .address-type {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+            margin-right: 10px;
+            background-color: var(--primary-color);
+        }
+        
+        .address-type.delivery {
+            background-color: var(--success-color);
+        }
+        
+        .address-name {
+            font-size: 15px;
+            font-weight: bold;
+        }
+        
+        .address-detail {
+            padding-left: 34px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+        
+        .address-contact {
+            padding-left: 34px;
+            font-size: 13px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-button {
+            color: var(--primary-color);
+            margin-left: 10px;
+            font-size: 14px;
+        }
+        
+        .product-list {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 14px;
+        }
+        
+        .product-item:last-child {
+            border-bottom: none;
+        }
+        
+        .product-name {
+            color: var(--text-color);
+        }
+        
+        .product-quantity {
+            color: var(--text-secondary);
+        }
+        
+        .product-summary {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+            margin-top: 5px;
+            border-top: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .action-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .action-button {
+            flex: 1;
+            height: 44px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .action-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .action-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        /* 导航页样式 */
+        .map-container {
+            position: relative;
+            height: 50vh;
+            background-color: #E3F2FD;
+            overflow: hidden;
+        }
+        
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+        }
+        
+        .map-tools {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .map-tool {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .navigation-panel {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 20px 15px;
+        }
+        
+        .nav-path {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .path-time {
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .path-distance {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-right: 15px;
+        }
+        
+        .path-eta {
+            font-size: 14px;
+            padding: 2px 8px;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border-radius: 10px;
+        }
+        
+        .nav-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .nav-button {
+            width: 70px;
+            height: 70px;
+            background-color: #f8f8f8;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+        }
+        
+        .nav-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .directions-next {
+            background-color: white;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .direction-icon {
+            width: 36px;
+            height: 36px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+        
+        .direction-info {
+            flex: 1;
+        }
+        
+        .direction-main {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .direction-detail {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .direction-distance {
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .delivery-status {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+        
+        .delivery-status-btns {
+            margin-top: 8px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .delivery-status-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .delivery-status-btn.delivered {
+            background-color: #52C41A;
+        }
+        
+        .delivery-route-list {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .route-list-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .route-list-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            opacity: 0.6;
+        }
+        
+        .route-list-item.active {
+            opacity: 1;
+        }
+        
+        .route-list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .route-point-num {
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            background-color: #F5F5F5;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .route-point-info {
+            flex: 1;
+        }
+        
+        .route-point-name {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        .route-point-address {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .route-point-status {
+            font-size: 12px;
+            color: #1890FF;
+            background-color: #E6F7FF;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+        
+        .route-point-status.completed {
+            color: #52C41A;
+            background-color: #F6FFED;
+        }
+        
+        /* 表单样式 */
+        .form-item {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+        
+        .form-input {
+            width: 100%;
+            height: 44px;
+            background-color: #f9f9f9;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0 15px;
+            font-size: 14px;
+            color: var(--text-color);
+        }
+        
+        .form-textarea {
+            width: 100%;
+            height: 100px;
+            background-color: #f9f9f9;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: var(--text-color);
+            resize: none;
+        }
+        
+        .upload-box {
+            width: 100%;
+            height: 120px;
+            background-color: #f9f9f9;
+            border: 1px dashed var(--border-color);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .upload-icon {
+            font-size: 24px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+        
+        .upload-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* 用户资料和功能菜单样式 */
+        .user-profile {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-right: 15px;
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .user-rating {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        
+        .user-id {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+        
+        .function-menu {
+            margin-top: 15px;
+        }
+        
+        .function-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .function-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            background-color: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .function-item {
+            padding: 15px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .function-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+        
+        .function-name {
+            font-size: 13px;
+            color: var(--text-color);
+        }
+        
+        /* 消息通知页样式 */
+        .tab-header {
+            display: flex;
+            background-color: white;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .tab-header-item {
+            flex: 1;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+            position: relative;
+        }
+        
+        .tab-header-item.active {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .tab-header-item.active:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 1.5px;
+        }
+        
+        .message-item {
+            display: flex;
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+        
+        .message-item.unread:before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            background-color: var(--danger-color);
+        }
+        
+        .message-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+            font-size: 20px;
+        }
+        
+        .message-icon.system {
+            background-color: #E6F7FF;
+        }
+        
+        .message-icon.order {
+            background-color: #F6FFED;
+        }
+        
+        .message-icon.activity {
+            background-color: #FFF7E6;
+        }
+        
+        .message-content {
+            flex: 1;
+        }
+        
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .message-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .message-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .message-body {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+        
+        .message-tag {
+            display: inline-block;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background-color: #F5F5F5;
+            color: var(--text-secondary);
+        }
+        
+        /* 收入明细页样式 */
+        .date-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .income-item {
+            display: flex;
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .income-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+            font-size: 20px;
+        }
+        
+        .income-icon.order {
+            background-color: #E6F7FF;
+        }
+        
+        .income-icon.bonus {
+            background-color: #FFF7E6;
+        }
+        
+        .income-icon.withdraw {
+            background-color: #F6FFED;
+        }
+        
+        .income-content {
+            flex: 1;
+        }
+        
+        .income-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .income-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 3px;
+        }
+        
+        .income-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .income-amount {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .income-amount.plus {
+            color: var(--danger-color);
+        }
+        
+        .income-amount.minus {
+            color: var(--text-secondary);
+        }
+        
+        .income-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        /* 单选按钮样式 */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .radio-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .radio-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .radio-item.active .radio-dot {
+            border-color: var(--primary-color);
+        }
+        
+        .radio-item.active .radio-dot:after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+        }
+        
+        .radio-text {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+        
+        /* 客服页样式 */
+        .customer-service-options {
+            margin-bottom: 20px;
+        }
+        
+        .cs-option-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: var(--text-color);
+        }
+        
+        .cs-option-item {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .cs-option-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+            font-size: 20px;
+            background-color: var(--primary-light);
+        }
+        
+        .cs-option-content {
+            flex: 1;
+        }
+        
+        .cs-option-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 3px;
+        }
+        
+        .cs-option-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .cs-option-action {
+            padding: 4px 12px;
+            border-radius: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 13px;
+        }
+        
+        .cs-faq-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .cs-faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: var(--text-color);
+        }
+        
+        .cs-faq-arrow {
+            color: var(--text-light);
+            font-size: 16px;
+        }
+        
+        /* 帮助中心页样式 */
+        .search-box {
+            margin-bottom: 15px;
+        }
+        
+        .search-input {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 20px;
+            padding: 0 15px;
+            height: 40px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .search-icon {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-right: 8px;
+        }
+        
+        .search-input input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            background: transparent;
+        }
+        
+        .quick-help-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .quick-help-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px 0;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .quick-help-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+        
+        .quick-help-name {
+            font-size: 13px;
+            color: var(--text-color);
+        }
+        
+        .help-category {
+            margin-bottom: 20px;
+        }
+        
+        .help-category-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: var(--text-color);
+        }
+        
+        .help-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .help-item-title {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+        
+        .help-item-arrow {
+            color: var(--text-light);
+            font-size: 16px;
+        }
+        
+        /* 设置页样式 */
+        .settings-group {
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+        
+        .settings-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+        
+        .settings-item-icon {
+            margin-right: 10px;
+        }
+        
+        .settings-item-title {
+            flex: 1;
+            font-size: 15px;
+            color: var(--text-color);
+        }
+        
+        .settings-item-value {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-right: 8px;
+        }
+        
+        .settings-item-arrow {
+            color: var(--text-light);
+            font-size: 16px;
+        }
+        
+        .settings-item-switch {
+            width: 50px;
+            height: 28px;
+            border-radius: 14px;
+            position: relative;
+        }
+        
+        .settings-item-switch.on {
+            background-color: var(--primary-color);
+        }
+        
+        .settings-item-switch.off {
+            background-color: #E1E1E1;
+        }
+        
+        .settings-item-switch:before {
+            content: "";
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            background-color: white;
+            top: 2px;
+            transition: left 0.2s;
+        }
+        
+        .settings-item-switch.on:before {
+            left: 24px;
+        }
+        
+        .settings-item-switch.off:before {
+            left: 2px;
+        }
+        
+        .settings-logout {
+            justify-content: center;
+        }
+        
+        .settings-logout .settings-item-title {
+            flex: 0;
+            color: var(--danger-color);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="prototype-container">
+        <!-- 产品规划说明 -->
+        <div style="width: 100%; margin-bottom: 30px; padding: 0 20px;">
+            <h1 style="text-align: center; margin-bottom: 20px;">小明超市云仓配送系统 - 司机端APP原型图</h1>
+            
+            <div style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
+                <h2>产品设计思路</h2>
+                <p>作为一名产品经理，我从司机用户的真实场景和需求出发，设计了这款云仓配送系统的司机端APP。整体产品遵循以下核心原则：</p>
+                
+                <h3>1. 用户中心</h3>
+                <p>以司机用户为中心，考虑他们在配送过程中的各个环节，包括接单、取货、配送、交付等，确保每个场景都有清晰的解决方案。</p>
+                
+                <h3>2. 简洁高效</h3>
+                <p>司机在工作中需要快速响应订单并专注于安全驾驶，因此界面设计力求简洁直观，减少不必要的操作步骤。</p>
+                
+                <h3>3. 数据驱动</h3>
+                <p>通过数据分析为司机提供收入统计、效率分析和优化建议，帮助他们提高工作效率和收入。</p>
+                
+                <h3>4. 智能辅助</h3>
+                <p>结合AI和算法为司机提供智能路线规划、订单推荐和配送优化，减轻司机的决策负担。</p>
+                
+                <h2>主要功能模块</h2>
+                <ul>
+                    <li><strong>账户管理</strong>：登录注册、身份认证、账户设置</li>
+                    <li><strong>订单中心</strong>：抢单大厅、订单详情、历史订单</li>
+                    <li><strong>导航配送</strong>：智能路线规划、实时导航、配送状态管理</li>
+                    <li><strong>收入管理</strong>：收入统计、结算记录、提现管理</li>
+                    <li><strong>数据分析</strong>：工作效率、评分管理、优化建议</li>
+                    <li><strong>消息中心</strong>：系统通知、活动信息、客户留言</li>
+                </ul>
+                
+                <h2>用户旅程</h2>
+                <p>以下原型展示了司机用户完整的使用旅程，包括：</p>
+                <ol>
+                    <li>登录和身份认证</li>
+                    <li>浏览和抢接订单</li>
+                    <li>查看订单详情</li>
+                    <li>接收货物并开始配送</li>
+                    <li>导航到目的地</li>
+                    <li>确认送达和完成订单</li>
+                    <li>查看收入和数据分析</li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- 登录页 -->
+        <div>
+            <div class="screen-title">登录页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">100%</span>
+                        </div>
+                    </div>
+                    <div class="login-container">
+                        <div class="login-header">
+                            <div class="app-logo">🚚</div>
+                            <div class="app-name">小明超市云仓配送</div>
+                            <div class="app-slogan">高效·安全·便捷</div>
+                        </div>
+                        <div class="login-form">
+                            <div class="input-group">
+                                <div class="input-label">手机号码</div>
+                                <input type="tel" class="input-field" placeholder="请输入手机号码" maxlength="11">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">密码</div>
+                                <input type="password" class="input-field" placeholder="请输入密码">
+                            </div>
+                            <button class="btn btn-primary">登录</button>
+                            <div class="login-options">
+                                <span>忘记密码</span>
+                                <span>新用户注册</span>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 30px; text-align: center; font-size: 12px; color: var(--text-light);">
+                            登录即代表同意《用户协议》和《隐私政策》
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 注册页 -->
+        <div>
+            <div class="screen-title">注册页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">100%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">注册账号</div>
+                        <div class="navbar-right"></div>
+                    </div>
+                    <div class="content">
+                        <div class="input-group">
+                            <div class="input-label">手机号码</div>
+                            <input type="tel" class="input-field" placeholder="请输入手机号码" maxlength="11">
+                        </div>
+                        <div class="input-group" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <div class="input-label">验证码</div>
+                                <input type="text" class="input-field" placeholder="请输入验证码">
+                            </div>
+                            <button class="btn btn-default" style="width: 120px; margin-top: 23px;">获取验证码</button>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-label">设置密码</div>
+                            <input type="password" class="input-field" placeholder="请设置6-20位登录密码">
+                        </div>
+                        <div class="input-group">
+                            <div class="input-label">确认密码</div>
+                            <input type="password" class="input-field" placeholder="请再次输入密码">
+                        </div>
+                        <div class="input-group">
+                            <div class="input-label">邀请码 (选填)</div>
+                            <input type="text" class="input-field" placeholder="请输入邀请码">
+                        </div>
+                        <div style="margin: 15px 0; font-size: 12px; color: var(--text-light);">
+                            <input type="checkbox" id="agreement" checked>
+                            <label for="agreement">我已阅读并同意《用户协议》和《隐私政策》</label>
+                        </div>
+                        <button class="btn btn-primary">注册</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 身份认证页 -->
+        <div>
+            <div class="screen-title">身份认证页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">100%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">身份认证</div>
+                        <div class="navbar-right"></div>
+                    </div>
+                    <div class="content">
+                        <div class="card" style="margin-top: 10px;">
+                            <div style="margin-bottom: 15px; color: var(--text-secondary);">请填写真实信息，认证后将无法修改</div>
+                            <div class="input-group">
+                                <div class="input-label">真实姓名</div>
+                                <input type="text" class="input-field" placeholder="请输入真实姓名">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">身份证号</div>
+                                <input type="text" class="input-field" placeholder="请输入18位身份证号">
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div style="font-weight: bold; margin-bottom: 15px;">身份证照片</div>
+                            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                <div style="flex: 1; height: 100px; background-color: #f5f5f5; border: 1px dashed #ddd; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                    <div style="font-size: 24px; margin-bottom: 5px;">+</div>
+                                    <div style="font-size: 12px; color: var(--text-light);">身份证正面</div>
+                                </div>
+                                <div style="flex: 1; height: 100px; background-color: #f5f5f5; border: 1px dashed #ddd; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                    <div style="font-size: 24px; margin-bottom: 5px;">+</div>
+                                    <div style="font-size: 12px; color: var(--text-light);">身份证反面</div>
+                                </div>
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-light);">请确保照片清晰完整，信息真实有效</div>
+                        </div>
+                        
+                        <div class="card">
+                            <div style="font-weight: bold; margin-bottom: 15px;">驾驶证信息</div>
+                            <div class="input-group">
+                                <div class="input-label">驾驶证号</div>
+                                <input type="text" class="input-field" placeholder="请输入驾驶证号">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">准驾车型</div>
+                                <select class="input-field">
+                                    <option>请选择</option>
+                                    <option>C1</option>
+                                    <option>C2</option>
+                                    <option>B1</option>
+                                    <option>B2</option>
+                                    <option>A1</option>
+                                    <option>A2</option>
+                                </select>
+                            </div>
+                            <div style="height: 100px; background-color: #f5f5f5; border: 1px dashed #ddd; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 10px;">
+                                <div style="font-size: 24px; margin-bottom: 5px;">+</div>
+                                <div style="font-size: 12px; color: var(--text-light);">上传驾驶证照片</div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary" style="margin-top: 20px;">提交认证</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 抢单大厅页 -->
+        <div>
+            <div class="screen-title">抢单大厅</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">90%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-title">抢单大厅</div>
+                        <div class="navbar-right">
+                            <span style="font-size: 20px;">🔔</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="user-info">
+                            <div class="user-avatar">张</div>
+                            <div>
+                                <div class="user-name">张师傅</div>
+                                <div class="user-rating">⭐ 4.9 | 优秀司机</div>
+                            </div>
+                            <div class="status-toggle">
+                                <span class="toggle-dot"></span>
+                                <span>接单中</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card income-card">
+                            <div class="income-title">今日收入</div>
+                            <div class="income-amount">¥328.50</div>
+                            <div class="income-detail">
+                                <div>已完成订单: 6</div>
+                                <div>配送里程: 43.2km</div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-bar">
+                            <div class="filter-item active">全部订单</div>
+                            <div class="filter-item">小件 (8)</div>
+                            <div class="filter-item">生鲜 (5)</div>
+                            <div class="filter-item">高价 (4)</div>
+                            <div class="filter-item">急单 (3)</div>
+                            <div class="filter-item">附近5km (10)</div>
+                        </div>
+                        
+                        <div class="card order-card">
+                            <div class="order-header">
+                                <div>
+                                    <span class="order-type urgent">加急</span>
+                                    <span class="order-type">生鲜</span>
+                                </div>
+                                <div class="order-price">¥58.00</div>
+                            </div>
+                            <div class="store-info">
+                                <span class="store-icon">🏪</span>
+                                <span class="store-name">小明超市 - 西湖区店</span>
+                            </div>
+                            <div class="order-info">
+                                <div class="info-item">
+                                    <span class="info-icon">📦</span>
+                                    <span>10件商品</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">⚖️</span>
+                                    <span>约8.5kg</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">🛣️</span>
+                                    <span>12.5km</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">⏱️</span>
+                                    <span>预计30分钟</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">🏪</span>
+                                    <span>配送3家门店</span>
+                                </div>
+                            </div>
+                            <div class="route-info">
+                                <div class="route-point start-point">
+                                    <div class="point-icon">起</div>
+                                    <div class="point-name">城东仓库</div>
+                                </div>
+                                <div class="route-line"></div>
+                                <div class="route-point end-point">
+                                    <div class="point-icon">终</div>
+                                    <div class="point-name">西湖区店</div>
+                                </div>
+                            </div>
+                            <div class="order-footer">
+                                <div class="time-info">剩余抢单时间: 2分30秒</div>
+                                <button class="grab-btn urgent">立即抢单</button>
+                            </div>
+                        </div>
+                        
+                        <div class="card order-card">
+                            <div class="order-header">
+                                <div>
+                                    <span class="order-type">标准</span>
+                                    <span class="order-type">小件</span>
+                                </div>
+                                <div class="order-price">¥36.00</div>
+                            </div>
+                            <div class="store-info">
+                                <span class="store-icon">🏪</span>
+                                <span class="store-name">小明超市 - 滨江区店</span>
+                            </div>
+                            <div class="order-info">
+                                <div class="info-item">
+                                    <span class="info-icon">📦</span>
+                                    <span>5件商品</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">⚖️</span>
+                                    <span>约3.2kg</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">🛣️</span>
+                                    <span>8.3km</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">⏱️</span>
+                                    <span>预计20分钟</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">🏪</span>
+                                    <span>配送1家门店</span>
+                                </div>
+                            </div>
+                            <div class="route-info">
+                                <div class="route-point start-point">
+                                    <div class="point-icon">起</div>
+                                    <div class="point-name">城南仓库</div>
+                                </div>
+                                <div class="route-line"></div>
+                                <div class="route-point end-point">
+                                    <div class="point-icon">终</div>
+                                    <div class="point-name">滨江区店</div>
+                                </div>
+                            </div>
+                            <div class="order-footer">
+                                <div class="time-info">剩余抢单时间: 5分钟</div>
+                                <button class="grab-btn">立即抢单</button>
+                            </div>
+                        </div>
+                        
+                        <div class="card order-card">
+                            <div class="order-header">
+                                <div>
+                                    <span class="order-type">标准</span>
+                                    <span class="order-type">大件</span>
+                                </div>
+                                <div class="order-price">¥45.00</div>
+                            </div>
+                            <div class="store-info">
+                                <span class="store-icon">🏪</span>
+                                <span class="store-name">小明超市 - 拱墅区店</span>
+                            </div>
+                            <div class="order-info">
+                                <div class="info-item">
+                                    <span class="info-icon">📦</span>
+                                    <span>12件商品</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">⚖️</span>
+                                    <span>约15kg</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">🛣️</span>
+                                    <span>10.1km</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">⏱️</span>
+                                    <span>预计25分钟</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">🏪</span>
+                                    <span>配送2家门店</span>
+                                </div>
+                            </div>
+                            <div class="route-info">
+                                <div class="route-point start-point">
+                                    <div class="point-icon">起</div>
+                                    <div class="point-name">城西仓库</div>
+                                </div>
+                                <div class="route-line"></div>
+                                <div class="route-point end-point">
+                                    <div class="point-icon">终</div>
+                                    <div class="point-name">拱墅区店</div>
+                                </div>
+                            </div>
+                            <div class="order-footer">
+                                <div class="time-info">剩余抢单时间: 7分钟</div>
+                                <button class="grab-btn">立即抢单</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-bar">
+                        <div class="tab-item active">
+                            <div class="tab-icon">🏠</div>
+                            <div>抢单</div>
+                        </div>
+                        <div class="tab-item">
+                            <div class="tab-icon">📋</div>
+                            <div>订单</div>
+                        </div>
+                        <div class="tab-item">
+                            <div class="tab-icon">📊</div>
+                            <div>数据</div>
+                        </div>
+                        <div class="tab-item">
+                            <div class="tab-icon">👤</div>
+                            <div>我的</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 订单详情页 -->
+        <div>
+            <div class="screen-title">订单详情页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">90%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">订单详情</div>
+                        <div class="navbar-right">
+                            <span style="font-size: 16px;">...</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="order-status">
+                            <div class="status-title">
+                                <div class="status-label">订单状态</div>
+                                <div class="status-value">待取货</div>
+                            </div>
+                            <div class="status-deadline">预计送达时间: 今天 11:30 前</div>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span class="section-icon">📄</span>
+                            <span>订单信息</span>
+                        </div>
+                        <div class="card info-list">
+                            <div class="info-row">
+                                <div class="info-label">订单编号</div>
+                                <div class="info-value">SJ20230301001</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">下单时间</div>
+                                <div class="info-value">2023-03-01 10:15</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">配送费</div>
+                                <div class="info-value highlight">¥58.00</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">配送距离</div>
+                                <div class="info-value">12.5km</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">预计用时</div>
+                                <div class="info-value">30分钟</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">配送门店</div>
+                                <div class="info-value highlight">3家</div>
+                            </div>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span class="section-icon">📍</span>
+                            <span>地址信息</span>
+                        </div>
+                        <div class="address-card">
+                            <div class="address-header">
+                                <div class="address-type">取</div>
+                                <div class="address-name">城东仓库</div>
+                            </div>
+                            <div class="address-detail">杭州市江干区九堡街道创业路58号小明超市仓库</div>
+                            <div class="address-contact">
+                                <span>李仓管 138****1234</span>
+                                <span class="contact-button">📞 拨打</span>
+                            </div>
+                        </div>
+                        <div class="address-card delivery">
+                            <div class="address-header">
+                                <div class="address-type delivery">送1</div>
+                                <div class="address-name">小明超市 - 西湖区店</div>
+                            </div>
+                            <div class="address-detail">杭州市西湖区文教路128号小明超市(西湖店)</div>
+                            <div class="address-contact">
+                                <span>王店长 139****5678</span>
+                                <span class="contact-button">📞 拨打</span>
+                            </div>
+                            <div class="delivery-status-btns">
+                                <button class="delivery-status-btn delivered">已送达</button>
+                            </div>
+                        </div>
+                        <div class="address-card delivery">
+                            <div class="address-header">
+                                <div class="address-type delivery">送2</div>
+                                <div class="address-name">小明超市 - 黄龙店</div>
+                            </div>
+                            <div class="address-detail">杭州市西湖区黄龙路189号小明超市(黄龙店)</div>
+                            <div class="address-contact">
+                                <span>赵店长 135****2468</span>
+                                <span class="contact-button">📞 拨打</span>
+                            </div>
+                            <div class="delivery-status-btns">
+                                <button class="delivery-status-btn">确认送达</button>
+                            </div>
+                        </div>
+                        <div class="address-card delivery">
+                            <div class="address-header">
+                                <div class="address-type delivery">送3</div>
+                                <div class="address-name">小明超市 - 西溪店</div>
+                            </div>
+                            <div class="address-detail">杭州市西湖区文一西路522号小明超市(西溪店)</div>
+                            <div class="address-contact">
+                                <span>钱店长 132****7890</span>
+                                <span class="contact-button">📞 拨打</span>
+                            </div>
+                            <div class="delivery-status-btns">
+                                <button class="delivery-status-btn">确认送达</button>
+                            </div>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span class="section-icon">📦</span>
+                            <span>商品信息</span>
+                        </div>
+                        <div class="product-list">
+                            <div class="product-item">
+                                <div class="product-name">纯牛奶 250ml</div>
+                                <div class="product-quantity">20盒</div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">面包</div>
+                                <div class="product-quantity">15袋</div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">新鲜蔬菜</div>
+                                <div class="product-quantity">8kg</div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">鸡蛋</div>
+                                <div class="product-quantity">5盒</div>
+                            </div>
+                            <div class="product-summary">
+                                <div>共10件商品</div>
+                                <div>总重量: 约8.5kg</div>
+                            </div>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span class="section-icon">📝</span>
+                            <span>备注</span>
+                        </div>
+                        <div class="card" style="color: var(--text-secondary); font-size: 14px;">
+                            生鲜类保持低温，轻拿轻放，与日用品分开包装。
+                        </div>
+                        
+                        <div class="action-group">
+                            <button class="action-button action-secondary">联系客服</button>
+                            <button class="action-button action-primary">开始取货</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 导航页 -->
+        <div>
+            <div class="screen-title">导航页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">85%</span>
+                        </div>
+                    </div>
+                    <div class="map-container">
+                        <div class="map-placeholder">
+                            <div style="font-size: 48px; margin-bottom: 15px;">🗺️</div>
+                            <div style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">导航中</div>
+                            <div style="font-size: 14px; color: var(--text-secondary);">城东仓库 → 配送3家门店</div>
+                        </div>
+                        <div class="map-tools">
+                            <div class="map-tool">🔍</div>
+                            <div class="map-tool">🔄</div>
+                            <div class="map-tool">🚗</div>
+                        </div>
+                        <div class="navigation-panel">
+                            <div class="nav-path">
+                                <div class="path-time">25分钟</div>
+                                <div class="path-distance">12.5公里</div>
+                                <div class="path-eta">11:05到达</div>
+                            </div>
+                            <div class="nav-actions">
+                                <div class="nav-button">
+                                    <div class="nav-icon">🔊</div>
+                                    <div class="nav-label">语音</div>
+                                </div>
+                                <div class="nav-button">
+                                    <div class="nav-icon">🛑</div>
+                                    <div class="nav-label">路况</div>
+                                </div>
+                                <div class="nav-button">
+                                    <div class="nav-icon">⚡</div>
+                                    <div class="nav-label">最快</div>
+                                </div>
+                                <div class="nav-button">
+                                    <div class="nav-icon">📱</div>
+                                    <div class="nav-label">联系</div>
+                                </div>
+                            </div>
+                            <div class="delivery-route-list">
+                                <div class="route-list-title">配送路线</div>
+                                <div class="route-list-item">
+                                    <div class="route-point-num">起点</div>
+                                    <div class="route-point-info">
+                                        <div class="route-point-name">城东仓库</div>
+                                        <div class="route-point-address">杭州市江干区九堡街道创业路58号小明超市仓库</div>
+                                    </div>
+                                </div>
+                                <div class="route-list-item active">
+                                    <div class="route-point-num">1</div>
+                                    <div class="route-point-info">
+                                        <div class="route-point-name">小明超市 - 西湖区店</div>
+                                        <div class="route-point-address">杭州市西湖区文教路128号小明超市(西湖店)</div>
+                                    </div>
+                                    <div class="route-point-status completed">已送达</div>
+                                </div>
+                                <div class="route-list-item active">
+                                    <div class="route-point-num">2</div>
+                                    <div class="route-point-info">
+                                        <div class="route-point-name">小明超市 - 黄龙店</div>
+                                        <div class="route-point-address">杭州市西湖区黄龙路189号小明超市(黄龙店)</div>
+                                    </div>
+                                    <div class="route-point-status">进行中</div>
+                                </div>
+                                <div class="route-list-item">
+                                    <div class="route-point-num">3</div>
+                                    <div class="route-point-info">
+                                        <div class="route-point-name">小明超市 - 西溪店</div>
+                                        <div class="route-point-address">杭州市西湖区文一西路522号小明超市(西溪店)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="directions-next">
+                                <div class="direction-icon">↗️</div>
+                                <div class="direction-info">
+                                    <div class="direction-main">向东北方向，沿创业路直行</div>
+                                    <div class="direction-detail">经过加油站，到达红绿灯路口</div>
+                                </div>
+                                <div class="direction-distance">1.2km</div>
+                            </div>
+                            <button class="btn btn-primary" style="margin-top: 15px;">确认已送达，前往下一站</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 配送中状态 -->
+        <div>
+            <div class="screen-title">配送中状态</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">80%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">订单详情</div>
+                        <div class="navbar-right">
+                            <span style="font-size: 16px;">...</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="order-status">
+                            <div class="status-title">
+                                <div class="status-label">订单状态</div>
+                                <div class="status-value" style="background-color: #E6F7FF; color: #1890FF;">配送中</div>
+                            </div>
+                            <div class="status-deadline">预计送达时间: 今天 11:30 前</div>
+                        </div>
+                        
+                        <div style="background-color: white; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                                <div style="font-size: 15px; font-weight: bold;">配送进度</div>
+                                <div style="font-size: 13px; color: var(--primary-color);">剩余12.5km</div>
+                            </div>
+                            <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                                <div style="flex: 1; height: 8px; border-radius: 4px; background-color: #F5F5F5; position: relative;">
+                                    <div style="position: absolute; left: 0; top: 0; width: 30%; height: 100%; border-radius: 4px; background-color: var(--primary-color);"></div>
+                                </div>
+                                <div style="margin-left: 10px; font-size: 15px; font-weight: bold; color: var(--primary-color);">30%</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 13px; color: var(--text-secondary);">已用时间</div>
+                                    <div style="font-size: 15px; font-weight: bold;">12分钟</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 13px; color: var(--text-secondary);">预计还需</div>
+                                    <div style="font-size: 15px; font-weight: bold;">18分钟</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 13px; color: var(--text-secondary);">预计到达</div>
+                                    <div style="font-size: 15px; font-weight: bold;">11:15</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span class="section-icon">📍</span>
+                            <span>地址信息</span>
+                        </div>
+                        <div class="address-card delivery">
+                            <div class="address-header">
+                                <div class="address-type delivery">送1</div>
+                                <div class="address-name">小明超市 - 西湖区店</div>
+                                <div class="delivery-status">已送达</div>
+                            </div>
+                            <div class="address-detail">杭州市西湖区文教路128号小明超市(西湖店)</div>
+                            <div class="address-contact">
+                                <span>王店长 139****5678</span>
+                                <span class="contact-button">📞 拨打</span>
+                            </div>
+                        </div>
+                        
+                        <div class="address-card delivery">
+                            <div class="address-header">
+                                <div class="address-type delivery">送2</div>
+                                <div class="address-name">小明超市 - 黄龙店</div>
+                                <div class="delivery-status">配送中</div>
+                            </div>
+                            <div class="address-detail">杭州市西湖区黄龙路189号小明超市(黄龙店)</div>
+                            <div class="address-contact">
+                                <span>赵店长 135****2468</span>
+                                <span class="contact-button">📞 拨打</span>
+                            </div>
+                        </div>
+                        
+                        <div class="address-card delivery">
+                            <div class="address-header">
+                                <div class="address-type delivery">送3</div>
+                                <div class="address-name">小明超市 - 西溪店</div>
+                                <div class="delivery-status">待配送</div>
+                            </div>
+                            <div class="address-detail">杭州市西湖区文一西路522号小明超市(西溪店)</div>
+                            <div class="address-contact">
+                                <span>钱店长 132****7890</span>
+                                <span class="contact-button">📞 拨打</span>
+                            </div>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span class="section-icon">📦</span>
+                            <span>商品信息</span>
+                        </div>
+                        <div class="product-list">
+                            <div class="product-item">
+                                <div class="product-name">纯牛奶 250ml</div>
+                                <div class="product-quantity">20盒</div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">面包</div>
+                                <div class="product-quantity">15袋</div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">新鲜蔬菜</div>
+                                <div class="product-quantity">8kg</div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">鸡蛋</div>
+                                <div class="product-quantity">5盒</div>
+                            </div>
+                            <div class="product-summary">
+                                <div>共10件商品</div>
+                                <div>总重量: 约8.5kg</div>
+                            </div>
+                        </div>
+                        
+                        <div class="action-group">
+                            <button class="action-button action-secondary">返回导航</button>
+                            <button class="action-button action-primary">确认送达</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 订单完成页 -->
+        <div>
+            <div class="screen-title">订单完成页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">80%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">订单详情</div>
+                        <div class="navbar-right"></div>
+                    </div>
+                    <div class="content">
+                        <div style="display: flex; flex-direction: column; align-items: center; margin: 30px 0;">
+                            <div style="width: 60px; height: 60px; border-radius: 50%; background-color: #F6FFED; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                <div style="font-size: 30px; color: var(--success-color);">✓</div>
+                            </div>
+                            <div style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">订单已完成</div>
+                            <div style="font-size: 14px; color: var(--text-secondary);">感谢您按时完成配送</div>
+                        </div>
+                        
+                        <div class="card info-list">
+                            <div class="info-row">
+                                <div class="info-label">订单编号</div>
+                                <div class="info-value">SJ20230301001</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">配送费</div>
+                                <div class="info-value highlight">¥58.00</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">接单时间</div>
+                                <div class="info-value">10:35</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">送达时间</div>
+                                <div class="info-value">11:12</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">配送用时</div>
+                                <div class="info-value">37分钟</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">配送距离</div>
+                                <div class="info-value">12.5km</div>
+                            </div>
+                        </div>
+                        
+                        <div style="background-color: #FFF7E6; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <div style="font-size: 20px; margin-right: 10px;">🏆</div>
+                                <div style="font-size: 16px; font-weight: bold; color: #FA8C16;">恭喜获得奖励</div>
+                            </div>
+                            <div style="font-size: 14px; color: #666; margin-bottom: 10px;">您提前18分钟送达，获得准时奖励</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="font-size: 18px; font-weight: bold; color: #FA8C16;">+¥5.00</div>
+                                <div style="font-size: 13px; color: #FA8C16;">已发放到账户余额</div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin: 20px 0;">
+                            <div style="font-size: 15px; color: var(--text-secondary); margin-bottom: 10px;">5星好评，持续获得优质订单</div>
+                            <div style="font-size: 24px; color: #FFD700;">★★★★★</div>
+                        </div>
+                        
+                        <div class="action-group">
+                            <button class="action-button action-secondary">查看细节</button>
+                            <button class="action-button action-primary">继续抢单</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 我的订单页 -->
+        <div>
+            <div class="screen-title">我的订单页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">75%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-title">我的订单</div>
+                        <div class="navbar-right">
+                            <span style="font-size: 16px;">🔍</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="filter-bar">
+                            <div class="filter-item active">全部</div>
+                            <div class="filter-item">配送中</div>
+                            <div class="filter-item">待取货</div>
+                            <div class="filter-item">已完成</div>
+                            <div class="filter-item">已取消</div>
+                        </div>
+                        
+                        <div class="card order-card">
+                            <div style="position: absolute; top: 15px; right: 15px; font-size: 13px; padding: 2px 8px; background-color: #E6F7FF; color: #1890FF; border-radius: 10px;">
+                                配送中
+                            </div>
+                            <div class="store-info">
+                                <span class="store-icon">🏪</span>
+                                <span class="store-name">小明超市 - 西湖区店</span>
+                            </div>
+                            <div class="order-info" style="margin-top: 10px;">
+                                <div class="info-item">
+                                    <span class="info-icon">🕙</span>
+                                    <span>11:30前送达</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">📦</span>
+                                    <span>10件商品</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">🛣️</span>
+                                    <span>12.5km</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">💰</span>
+                                    <span style="color: var(--danger-color);">¥58.00</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">🏪</span>
+                                    <span>配送3家门店</span>
+                                </div>
+                            </div>
+                            <div class="route-info">
+                                <div class="route-point start-point">
+                                    <div class="point-icon">起</div>
+                                    <div class="point-name">城东仓库</div>
+                                </div>
+                                <div class="route-line"></div>
+                                <div class="route-point end-point">
+                                    <div class="point-icon">终</div>
+                                    <div class="point-name">西湖区店</div>
+                                </div>
+                            </div>
+                            <div class="order-footer" style="margin-top: 10px;">
+                                <div style="font-size: 12px; color: var(--text-light);">
+                                    订单编号: SJ20230301001
+                                </div>
+                                <button class="grab-btn" style="background-color: #1890FF;">继续配送</button>
+                            </div>
+                        </div>
+                        
+                        <div class="card order-card">
+                            <div style="position: absolute; top: 15px; right: 15px; font-size: 13px; padding: 2px 8px; background-color: #FFF7E6; color: #FA8C16; border-radius: 10px;">
+                                待取货
+                            </div>
+                            <div class="store-info">
+                                <span class="store-icon">🏪</span>
+                                <span class="store-name">小明超市 - 滨江区店</span>
+                            </div>
+                            <div class="order-info" style="margin-top: 10px;">
+                                <div class="info-item">
+                                    <span class="info-icon">🕙</span>
+                                    <span>12:00前送达</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">📦</span>
+                                    <span>5件商品</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">🛣️</span>
+                                    <span>8.3km</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">💰</span>
+                                    <span style="color: var(--danger-color);">¥36.00</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">🏪</span>
+                                    <span>配送1家门店</span>
+                                </div>
+                            </div>
+                            <div class="route-info">
+                                <div class="route-point start-point">
+                                    <div class="point-icon">起</div>
+                                    <div class="point-name">城南仓库</div>
+                                </div>
+                                <div class="route-line"></div>
+                                <div class="route-point end-point">
+                                    <div class="point-icon">终</div>
+                                    <div class="point-name">滨江区店</div>
+                                </div>
+                            </div>
+                            <div class="order-footer" style="margin-top: 10px;">
+                                <div style="font-size: 12px; color: var(--text-light);">
+                                    订单编号: SJ20230301002
+                                </div>
+                                <button class="grab-btn" style="background-color: #FA8C16;">开始取货</button>
+                            </div>
+                        </div>
+                        
+                        <div class="card order-card">
+                            <div style="position: absolute; top: 15px; right: 15px; font-size: 13px; padding: 2px 8px; background-color: #F6FFED; color: #52C41A; border-radius: 10px;">
+                                已完成
+                            </div>
+                            <div class="store-info">
+                                <span class="store-icon">🏪</span>
+                                <span class="store-name">小明超市 - 拱墅区店</span>
+                            </div>
+                            <div class="order-info" style="margin-top: 10px;">
+                                <div class="info-item">
+                                    <span class="info-icon">🕙</span>
+                                    <span>今日 09:25送达</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">📦</span>
+                                    <span>12件商品</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">🛣️</span>
+                                    <span>10.1km</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">💰</span>
+                                    <span style="color: var(--danger-color);">¥45.00</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-icon">🏪</span>
+                                    <span>配送2家门店</span>
+                                </div>
+                            </div>
+                            <div class="route-info">
+                                <div class="route-point start-point">
+                                    <div class="point-icon">起</div>
+                                    <div class="point-name">城西仓库</div>
+                                </div>
+                                <div class="route-line"></div>
+                                <div class="route-point end-point">
+                                    <div class="point-icon">终</div>
+                                    <div class="point-name">拱墅区店</div>
+                                </div>
+                            </div>
+                            <div class="order-footer" style="margin-top: 10px;">
+                                <div style="font-size: 12px; color: var(--text-light);">
+                                    订单编号: SJ20230301003
+                                </div>
+                                <button class="grab-btn" style="background-color: #52C41A;">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-bar">
+                        <div class="tab-item">
+                            <div class="tab-icon">🏠</div>
+                            <div>抢单</div>
+                        </div>
+                        <div class="tab-item active">
+                            <div class="tab-icon">📋</div>
+                            <div>订单</div>
+                        </div>
+                        <div class="tab-item">
+                            <div class="tab-icon">📊</div>
+                            <div>数据</div>
+                        </div>
+                        <div class="tab-item">
+                            <div class="tab-icon">👤</div>
+                            <div>我的</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 数据统计页 -->
+        <div>
+            <div class="screen-title">数据统计页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">70%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-title">数据统计</div>
+                        <div class="navbar-right">
+                            <span style="font-size: 14px;">筛选</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <div style="font-size: 16px; font-weight: bold;">收入概览</div>
+                            <div style="font-size: 14px; color: var(--primary-color); display: flex; align-items: center;">
+                                <span>2023年3月</span>
+                                <span style="margin-left: 5px;">▼</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="padding: 0; overflow: hidden;">
+                            <div style="padding: 15px; border-bottom: 1px solid var(--border-color);">
+                                <div style="font-size: 28px; font-weight: bold; color: var(--text-color); margin-bottom: 5px;">
+                                    ¥5,382.00
+                                </div>
+                                <div style="font-size: 13px; color: var(--text-secondary);">
+                                    总收入 <span style="color: var(--success-color); margin-left: 5px;">↑12% 环比上月</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; text-align: center;">
+                                <div style="flex: 1; padding: 15px; border-right: 1px solid var(--border-color);">
+                                    <div style="font-size: 20px; font-weight: bold; color: var(--text-color); margin-bottom: 5px;">
+                                        132
+                                    </div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">
+                                        总订单数
+                                    </div>
+                                </div>
+                                <div style="flex: 1; padding: 15px; border-right: 1px solid var(--border-color);">
+                                    <div style="font-size: 20px; font-weight: bold; color: var(--text-color); margin-bottom: 5px;">
+                                        ¥40.77
+                                    </div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">
+                                        单均收入
+                                    </div>
+                                </div>
+                                <div style="flex: 1; padding: 15px;">
+                                    <div style="font-size: 20px; font-weight: bold; color: var(--text-color); margin-bottom: 5px;">
+                                        215
+                                    </div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">
+                                        总工时
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0 15px;">
+                            <div style="font-size: 16px; font-weight: bold;">收入走势</div>
+                            <div style="font-size: 13px; color: var(--text-secondary); display: flex; align-items: center;">
+                                <span>查看详情</span>
+                                <span style="margin-left: 5px;">→</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div style="height: 200px; background-color: #f5f5f5; border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                <div style="color: var(--text-light); font-size: 14px;">收入趋势图表</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 13px; color: var(--text-secondary);">本周</div>
+                                    <div style="font-size: 15px; font-weight: bold;">¥1,245</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 13px; color: var(--text-secondary);">本月</div>
+                                    <div style="font-size: 15px; font-weight: bold;">¥5,382</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 13px; color: var(--text-secondary);">预计本月</div>
+                                    <div style="font-size: 15px; font-weight: bold;">¥6,200</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0 15px;">
+                            <div style="font-size: 16px; font-weight: bold;">工作数据</div>
+                            <div style="font-size: 13px; color: var(--text-secondary); display: flex; align-items: center;">
+                                <span>查看详情</span>
+                                <span style="margin-left: 5px;">→</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="padding: 0; overflow: hidden;">
+                            <div style="display: flex; text-align: center;">
+                                <div style="flex: 1; padding: 15px; border-right: 1px solid var(--border-color);">
+                                    <div style="font-size: 20px; font-weight: bold; color: var(--text-color); margin-bottom: 5px;">
+                                        856
+                                    </div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">
+                                        总里程(km)
+                                    </div>
+                                </div>
+                                <div style="flex: 1; padding: 15px;">
+                                    <div style="font-size: 20px; font-weight: bold; color: var(--text-color); margin-bottom: 5px;">
+                                        98%
+                                    </div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">
+                                        准时率
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex; text-align: center; border-top: 1px solid var(--border-color);">
+                                <div style="flex: 1; padding: 15px; border-right: 1px solid var(--border-color);">
+                                    <div style="font-size: 20px; font-weight: bold; color: var(--text-color); margin-bottom: 5px;">
+                                        4.9
+                                    </div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">
+                                        平均评分
+                                    </div>
+                                </div>
+                                <div style="flex: 1; padding: 15px;">
+                                    <div style="font-size: 20px; font-weight: bold; color: var(--text-color); margin-bottom: 5px;">
+                                        25
+                                    </div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">
+                                        平均配送(min)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0 15px;">
+                            <div style="font-size: 16px; font-weight: bold;">效率分析</div>
+                        </div>
+                        
+                        <div class="card">
+                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #E6F7FF; display: flex; align-items: center; justify-content: center; margin-right: 15px; color: var(--primary-color); font-size: 20px;">
+                                    💡
+                                </div>
+                                <div>
+                                    <div style="font-size: 15px; font-weight: bold; margin-bottom: 3px;">效率优化建议</div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">根据您的配送数据生成的个性化建议</div>
+                                </div>
+                            </div>
+                            
+                            <div style="padding: 12px; background-color: #F9F9F9; border-radius: 6px; margin-bottom: 10px;">
+                                <div style="font-size: 14px; margin-bottom: 8px;">
+                                    <span style="color: var(--primary-color); margin-right: 5px;">🕒</span>
+                                    <span>在高峰期（11:00-13:00）接单数量较少</span>
+                                </div>
+                                <div style="font-size: 13px; color: var(--text-secondary);">建议：中午高峰期增加接单，提高单均收入</div>
+                            </div>
+                            
+                            <div style="padding: 12px; background-color: #F9F9F9; border-radius: 6px;">
+                                <div style="font-size: 14px; margin-bottom: 8px;">
+                                    <span style="color: var(--primary-color); margin-right: 5px;">📍</span>
+                                    <span>西湖区和滨江区的订单完成效率较高</span>
+                                </div>
+                                <div style="font-size: 13px; color: var(--text-secondary);">建议：增加这两个区域的接单比例</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-bar">
+                        <div class="tab-item">
+                            <div class="tab-icon">🏠</div>
+                            <div>抢单</div>
+                        </div>
+                        <div class="tab-item">
+                            <div class="tab-icon">📋</div>
+                            <div>订单</div>
+                        </div>
+                        <div class="tab-item active">
+                            <div class="tab-icon">📊</div>
+                            <div>数据</div>
+                        </div>
+                        <div class="tab-item">
+                            <div class="tab-icon">👤</div>
+                            <div>我的</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 个人中心页 -->
+        <div>
+            <div class="screen-title">个人中心页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">70%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-title">个人中心</div>
+                        <div class="navbar-right">
+                            <span style="font-size: 16px;">⚙️</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="user-profile">
+                            <div class="user-avatar" style="width: 70px; height: 70px; font-size: 28px;">张</div>
+                            <div class="user-info">
+                                <div class="user-name" style="font-size: 18px;">张师傅</div>
+                                <div class="user-rating">⭐ 4.9 | 优秀司机</div>
+                                <div class="user-id">ID: 10085756</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="margin-top: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid var(--border-color);">
+                                <div style="font-size: 16px; font-weight: bold;">我的评分</div>
+                                <div style="color: var(--text-light); font-size: 14px;">查看详情 ></div>
+                            </div>
+                            <div style="display: flex; justify-content: space-around; padding: 15px 0;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 22px; font-weight: bold; color: var(--success-color);">4.9</div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">综合评分</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 22px; font-weight: bold; color: var(--success-color);">98%</div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">准时率</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 22px; font-weight: bold; color: var(--success-color);">99%</div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">完成率</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid var(--border-color);">
+                                <div style="font-size: 16px; font-weight: bold;">钱包管理</div>
+                                <div style="color: var(--text-light); font-size: 14px;">查看详情 ></div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 15px 0; align-items: center;">
+                                <div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">账户余额</div>
+                                    <div style="font-size: 22px; font-weight: bold; margin-top: 5px;">¥1,283.50</div>
+                                </div>
+                                <button class="btn btn-primary" style="width: 100px; height: 36px; font-size: 14px;">立即提现</button>
+                            </div>
+                        </div>
+                        
+                        <div class="function-menu">
+                            <div class="function-title">功能菜单</div>
+                            <div class="function-grid">
+                                <div class="function-item">
+                                    <div class="function-icon">🚗</div>
+                                    <div class="function-name">车辆管理</div>
+                                </div>
+                                <div class="function-item">
+                                    <div class="function-icon">📝</div>
+                                    <div class="function-name">认证信息</div>
+                                </div>
+                                <div class="function-item">
+                                    <div class="function-icon">🔔</div>
+                                    <div class="function-name">消息通知</div>
+                                </div>
+                                <div class="function-item">
+                                    <div class="function-icon">📃</div>
+                                    <div class="function-name">开具发票</div>
+                                </div>
+                                <div class="function-item">
+                                    <div class="function-icon">💰</div>
+                                    <div class="function-name">收入明细</div>
+                                </div>
+                                <div class="function-item">
+                                    <div class="function-icon">📞</div>
+                                    <div class="function-name">联系客服</div>
+                                </div>
+                                <div class="function-item">
+                                    <div class="function-icon">❓</div>
+                                    <div class="function-name">帮助中心</div>
+                                </div>
+                                <div class="function-item">
+                                    <div class="function-icon">⚙️</div>
+                                    <div class="function-name">设置</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-bar">
+                        <div class="tab-item">
+                            <div class="tab-icon">🏠</div>
+                            <div>抢单</div>
+                        </div>
+                        <div class="tab-item">
+                            <div class="tab-icon">📋</div>
+                            <div>订单</div>
+                        </div>
+                        <div class="tab-item">
+                            <div class="tab-icon">📊</div>
+                            <div>数据</div>
+                        </div>
+                        <div class="tab-item active">
+                            <div class="tab-icon">👤</div>
+                            <div>我的</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 车辆管理页 -->
+        <div>
+            <div class="screen-title">车辆管理页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">65%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">车辆管理</div>
+                        <div class="navbar-right"></div>
+                    </div>
+                    <div class="content">
+                        <div class="card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+                                <div style="display: flex; align-items: center;">
+                                    <div style="width: 50px; height: 50px; border-radius: 4px; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                        <span style="font-size: 24px;">🚚</span>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 16px; font-weight: bold;">五菱小卡 1.5L</div>
+                                        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">浙A·12345</div>
+                                    </div>
+                                </div>
+                                <div style="padding: 4px 8px; background-color: #F6FFED; color: #52C41A; border-radius: 10px; font-size: 12px;">认证通过</div>
+                            </div>
+                            <div style="padding: 12px 0; border-bottom: 1px solid var(--border-color); font-size: 14px;">
+                                <div style="display: flex; margin-bottom: 8px;">
+                                    <div style="color: var(--text-secondary); width: 80px;">车架号</div>
+                                    <div>LGB216K8743****95</div>
+                                </div>
+                                <div style="display: flex; margin-bottom: 8px;">
+                                    <div style="color: var(--text-secondary); width: 80px;">货箱容积</div>
+                                    <div>2.5m³</div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div style="color: var(--text-secondary); width: 80px;">最大载重</div>
+                                    <div>1000kg</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding-top: 12px;">
+                                <button style="border: none; background: none; color: var(--text-light); font-size: 14px;">设为默认</button>
+                                <div>
+                                    <button style="border: none; background: none; color: var(--danger-color); font-size: 14px; margin-right: 15px;">删除</button>
+                                    <button style="border: none; background: none; color: var(--primary-color); font-size: 14px;">编辑</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+                                <div style="display: flex; align-items: center;">
+                                    <div style="width: 50px; height: 50px; border-radius: 4px; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                        <span style="font-size: 24px;">🚛</span>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 16px; font-weight: bold;">五十铃货车 3.5L</div>
+                                        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">浙A·67890</div>
+                                    </div>
+                                </div>
+                                <div style="padding: 4px 8px; background-color: #FFF7E6; color: #FA8C16; border-radius: 10px; font-size: 12px;">审核中</div>
+                            </div>
+                            <div style="padding: 12px 0; border-bottom: 1px solid var(--border-color); font-size: 14px;">
+                                <div style="display: flex; margin-bottom: 8px;">
+                                    <div style="color: var(--text-secondary); width: 80px;">车架号</div>
+                                    <div>JALB721G9B7****82</div>
+                                </div>
+                                <div style="display: flex; margin-bottom: 8px;">
+                                    <div style="color: var(--text-secondary); width: 80px;">货箱容积</div>
+                                    <div>8.5m³</div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div style="color: var(--text-secondary); width: 80px;">最大载重</div>
+                                    <div>3500kg</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: flex-end; padding-top: 12px;">
+                                <button style="border: none; background: none; color: var(--danger-color); font-size: 14px; margin-right: 15px;">撤回</button>
+                                <button style="border: none; background: none; color: var(--primary-color); font-size: 14px;">查看审核进度</button>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary" style="margin-top: 20px; width: 100%;">
+                            + 添加车辆
+                        </button>
+                        
+                        <div style="margin-top: 15px; padding: 10px; background-color: #F9F9F9; border-radius: 4px; font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+                            <div style="margin-bottom: 5px; font-weight: bold; color: var(--text-color);">须知：</div>
+                            <div>1. 每位司机最多可添加3辆车辆</div>
+                            <div>2. 车辆信息审核通过后才能接单配送</div>
+                            <div>3. 请确保上传的证件照片清晰可见</div>
+                            <div>4. 行驶证和车辆必须为本人名下</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 添加车辆页 -->
+        <div>
+            <div class="screen-title">添加车辆页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">60%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">添加车辆</div>
+                        <div class="navbar-right"></div>
+                    </div>
+                    <div class="content">
+                        <div style="background-color: #FFF7E6; color: #FA8C16; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-size: 13px;">
+                            请填写真实车辆信息，提交后将进行人工审核，审核通过后您才能使用该车辆接单。
+                        </div>
+                        
+                        <div class="section-title">
+                            <span class="section-icon">🚗</span>
+                            <span>基本信息</span>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">车牌号码 <span style="color: #ee0a24;">*</span></div>
+                            <input type="text" class="form-input" placeholder="请输入车牌号码" value="浙A·">
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">车辆品牌 <span style="color: #ee0a24;">*</span></div>
+                            <div class="form-input" style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="color: var(--text-light);">请选择车辆品牌</span>
+                                <span>></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">车型系列 <span style="color: #ee0a24;">*</span></div>
+                            <div class="form-input" style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="color: var(--text-light);">请选择车型系列</span>
+                                <span>></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">车架号 <span style="color: #ee0a24;">*</span></div>
+                            <input type="text" class="form-input" placeholder="请输入车架号">
+                            <div style="font-size: 12px; color: var(--text-light); margin-top: 5px;">车架号是英文字母和数字组合的17位编码</div>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">车辆颜色</div>
+                            <div class="form-input" style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="color: var(--text-light);">请选择车辆颜色</span>
+                                <span>></span>
+                            </div>
+                        </div>
+                        
+                        <div class="section-title" style="margin-top: 20px;">
+                            <span class="section-icon">📦</span>
+                            <span>货箱信息</span>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">货箱容积(m³) <span style="color: #ee0a24;">*</span></div>
+                            <input type="text" class="form-input" placeholder="请输入货箱容积">
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">货箱长度(m)</div>
+                            <input type="text" class="form-input" placeholder="请输入货箱长度">
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">货箱宽度(m)</div>
+                            <input type="text" class="form-input" placeholder="请输入货箱宽度">
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">货箱高度(m)</div>
+                            <input type="text" class="form-input" placeholder="请输入货箱高度">
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">最大载重(kg) <span style="color: #ee0a24;">*</span></div>
+                            <input type="text" class="form-input" placeholder="请输入最大载重">
+                        </div>
+                        
+                        <div class="section-title" style="margin-top: 20px;">
+                            <span class="section-icon">📄</span>
+                            <span>证件照片</span>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">行驶证正本 <span style="color: #ee0a24;">*</span></div>
+                            <div class="upload-box">
+                                <div class="upload-icon">+</div>
+                                <div class="upload-text">上传行驶证正本</div>
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-light); margin-top: 5px;">请确保信息清晰可见，大小不超过5MB</div>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">行驶证副本 <span style="color: #ee0a24;">*</span></div>
+                            <div class="upload-box">
+                                <div class="upload-icon">+</div>
+                                <div class="upload-text">上传行驶证副本</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">车辆正面照片 <span style="color: #ee0a24;">*</span></div>
+                            <div class="upload-box">
+                                <div class="upload-icon">+</div>
+                                <div class="upload-text">上传车辆正面照片</div>
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-light); margin-top: 5px;">请拍摄车辆正面照片，需包含清晰车牌</div>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">车辆侧面照片 <span style="color: #ee0a24;">*</span></div>
+                            <div class="upload-box">
+                                <div class="upload-icon">+</div>
+                                <div class="upload-text">上传车辆侧面照片</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">货箱照片 <span style="color: #ee0a24;">*</span></div>
+                            <div class="upload-box">
+                                <div class="upload-icon">+</div>
+                                <div class="upload-text">上传货箱照片</div>
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-light); margin-top: 5px;">请拍摄打开后的货箱，能够清晰显示内部空间</div>
+                        </div>
+                        
+                        <div class="section-title" style="margin-top: 20px;">
+                            <span class="section-icon">📝</span>
+                            <span>其他信息</span>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">车辆备注</div>
+                            <textarea class="form-textarea" placeholder="请输入您的车辆备注信息，如车辆特点、设备配置等"></textarea>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; margin: 20px 0;">
+                            <div style="width: 20px; height: 20px; border-radius: 2px; border: 1px solid var(--primary-color); display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                <div style="width: 12px; height: 12px; background-color: var(--primary-color); border-radius: 1px;"></div>
+                            </div>
+                            <div style="font-size: 14px;">我已阅读并同意<span style="color: var(--primary-color);">《车辆认证服务协议》</span></div>
+                        </div>
+                        
+                        <div class="action-group" style="margin-top: 20px; margin-bottom: 30px;">
+                            <button class="action-button action-secondary">取消</button>
+                            <button class="action-button action-primary">提交认证</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 消息通知页 -->
+        <div>
+            <div class="screen-title">消息通知页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">60%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">消息通知</div>
+                        <div class="navbar-right">
+                            <span style="font-size: 16px;">✓</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="tab-header">
+                            <div class="tab-header-item active">全部</div>
+                            <div class="tab-header-item">系统通知</div>
+                            <div class="tab-header-item">订单消息</div>
+                            <div class="tab-header-item">活动推送</div>
+                        </div>
+                        
+                        <div class="message-item unread">
+                            <div class="message-icon system">
+                                <span>📢</span>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <div class="message-title">系统维护通知</div>
+                                    <div class="message-time">今天 08:30</div>
+                                </div>
+                                <div class="message-body">
+                                    尊敬的司机师傅，系统将于今晚23:00-次日凌晨2:00进行例行维护，期间暂停接单功能，请您合理安排配送时间。
+                                </div>
+                                <div class="message-tag">系统通知</div>
+                            </div>
+                            <div class="message-badge"></div>
+                        </div>
+                        
+                        <div class="message-item unread">
+                            <div class="message-icon order">
+                                <span>🚚</span>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <div class="message-title">订单已完成</div>
+                                    <div class="message-time">今天 07:45</div>
+                                </div>
+                                <div class="message-body">
+                                    订单#SJ20230301001已完成，配送费58.00元已入账，感谢您按时完成配送任务！
+                                </div>
+                                <div class="message-tag">订单消息</div>
+                            </div>
+                            <div class="message-badge"></div>
+                        </div>
+                        
+                        <div class="message-item">
+                            <div class="message-icon activity">
+                                <span>🎁</span>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <div class="message-title">周末双倍奖励活动</div>
+                                    <div class="message-time">昨天 16:20</div>
+                                </div>
+                                <div class="message-body">
+                                    本周六日(3/4-3/5)期间，每完成5单即可获得额外奖励20元，多劳多得，欢迎积极参与！
+                                </div>
+                                <div class="message-tag">活动推送</div>
+                            </div>
+                        </div>
+                        
+                        <div class="message-item">
+                            <div class="message-icon system">
+                                <span>📢</span>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <div class="message-title">账户安全提醒</div>
+                                    <div class="message-time">前天 10:15</div>
+                                </div>
+                                <div class="message-body">
+                                    您的账户已30天未修改密码，为了账户安全，建议定期更换密码并开启双重验证。
+                                </div>
+                                <div class="message-tag">系统通知</div>
+                            </div>
+                        </div>
+                        
+                        <div class="message-item">
+                            <div class="message-icon order">
+                                <span>🚚</span>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <div class="message-title">订单已分配</div>
+                                    <div class="message-time">2023-03-01 09:30</div>
+                                </div>
+                                <div class="message-body">
+                                    您有一个新的配送订单#SJ20230301001已分配，请及时前往城东仓库取货。
+                                </div>
+                                <div class="message-tag">订单消息</div>
+                            </div>
+                        </div>
+                        
+                        <div class="message-item">
+                            <div class="message-icon activity">
+                                <span>🎁</span>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <div class="message-title">新人奖励已发放</div>
+                                    <div class="message-time">2023-02-28 14:25</div>
+                                </div>
+                                <div class="message-body">
+                                    恭喜您完成新人首周任务，奖励金100元已发放至您的账户余额，可随时提现。
+                                </div>
+                                <div class="message-tag">活动推送</div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; padding: 20px 0; color: var(--text-light); font-size: 13px;">
+                            没有更多消息了
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 开具发票页 -->
+        <div>
+            <div class="screen-title">开具发票页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">55%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">开具发票</div>
+                        <div class="navbar-right"></div>
+                    </div>
+                    <div class="content">
+                        <div class="tab-header">
+                            <div class="tab-header-item active">申请开票</div>
+                            <div class="tab-header-item">开票记录</div>
+                        </div>
+                        
+                        <div class="card" style="margin-top: 15px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+                                <div style="font-size: 15px; font-weight: bold;">可开票金额</div>
+                                <div style="font-size: 20px; font-weight: bold; color: var(--primary-color);">¥5,382.00</div>
+                            </div>
+                            <div style="font-size: 13px; color: var(--text-secondary); padding: 10px 0;">
+                                可开票金额为截至目前未开具发票的收入总额，包含配送费、奖励金等。
+                            </div>
+                        </div>
+                        
+                        <div class="section-title" style="margin-top: 20px;">
+                            <span class="section-icon">📃</span>
+                            <span>发票信息</span>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">发票类型 <span style="color: #ee0a24;">*</span></div>
+                            <div class="radio-group">
+                                <div class="radio-item active">
+                                    <div class="radio-dot"></div>
+                                    <div class="radio-text">增值税普通发票</div>
+                                </div>
+                                <div class="radio-item">
+                                    <div class="radio-dot"></div>
+                                    <div class="radio-text">增值税专用发票</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">发票抬头 <span style="color: #ee0a24;">*</span></div>
+                            <div class="radio-group">
+                                <div class="radio-item active">
+                                    <div class="radio-dot"></div>
+                                    <div class="radio-text">个人</div>
+                                </div>
+                                <div class="radio-item">
+                                    <div class="radio-dot"></div>
+                                    <div class="radio-text">企业单位</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">抬头名称 <span style="color: #ee0a24;">*</span></div>
+                            <input type="text" class="form-input" placeholder="请输入发票抬头名称">
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">税号</div>
+                            <input type="text" class="form-input" placeholder="请输入纳税人识别号">
+                            <div style="font-size: 12px; color: var(--text-light); margin-top: 5px;">个人抬头可不填，企业抬头必填</div>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">开票金额 <span style="color: #ee0a24;">*</span></div>
+                            <input type="text" class="form-input" placeholder="请输入开票金额" value="5,382.00">
+                            <div style="font-size: 12px; color: var(--text-light); margin-top: 5px;">可输入部分金额或全部可开票金额</div>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">开票内容 <span style="color: #ee0a24;">*</span></div>
+                            <div class="form-input" style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>运输服务费</span>
+                                <span>></span>
+                            </div>
+                        </div>
+                        
+                        <div class="section-title" style="margin-top: 20px;">
+                            <span class="section-icon">📧</span>
+                            <span>接收方式</span>
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">电子邮箱 <span style="color: #ee0a24;">*</span></div>
+                            <input type="text" class="form-input" placeholder="请输入接收电子发票的邮箱">
+                        </div>
+                        
+                        <div class="form-item">
+                            <div class="form-label">手机号码</div>
+                            <input type="text" class="form-input" placeholder="请输入接收发票的手机号" value="138****1234">
+                        </div>
+                        
+                        <div class="action-group" style="margin-top: 30px; margin-bottom: 30px;">
+                            <button class="action-button action-primary" style="width: 100%;">提交申请</button>
+                        </div>
+                        
+                        <div style="background-color: #F9F9F9; border-radius: 4px; padding: 10px; font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+                            <div style="font-weight: bold; color: var(--text-color); margin-bottom: 5px;">开票须知：</div>
+                            <div>1. 发票申请提交后，将在1-3个工作日内处理</div>
+                            <div>2. 电子发票与纸质发票具有同等法律效力</div>
+                            <div>3. 开票信息提交后无法修改，请仔细核对</div>
+                            <div>4. 如需帮助，请联系客服 400-888-8888</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 收入明细页 -->
+        <div>
+            <div class="screen-title">收入明细页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">50%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">收入明细</div>
+                        <div class="navbar-right">
+                            <span style="font-size: 16px;">📅</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="card" style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px;">
+                                <div style="font-size: 15px; font-weight: bold;">2023年3月</div>
+                                <div style="font-size: 14px; color: var(--primary-color);">筛选</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 15px 0; border-top: 1px solid var(--border-color);">
+                                <div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">累计收入</div>
+                                    <div style="font-size: 22px; font-weight: bold; margin-top: 5px;">¥5,382.00</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 13px; color: var(--text-secondary); text-align: right;">订单数</div>
+                                    <div style="font-size: 22px; font-weight: bold; margin-top: 5px; text-align: right;">68单</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="date-header">
+                            <div>今天 (3月2日)</div>
+                            <div>收入：¥328.50</div>
+                        </div>
+                        
+                        <div class="income-item">
+                            <div class="income-icon order">
+                                <span>🚚</span>
+                            </div>
+                            <div class="income-content">
+                                <div class="income-detail">
+                                    <div>
+                                        <div class="income-title">配送费 - 订单#SJ20230301001</div>
+                                        <div class="income-desc">西湖区店 | 配送3家门店</div>
+                                    </div>
+                                    <div class="income-amount plus">+58.00</div>
+                                </div>
+                                <div class="income-time">07:45</div>
+                            </div>
+                        </div>
+                        
+                        <div class="income-item">
+                            <div class="income-icon order">
+                                <span>🚚</span>
+                            </div>
+                            <div class="income-content">
+                                <div class="income-detail">
+                                    <div>
+                                        <div class="income-title">配送费 - 订单#SJ20230301002</div>
+                                        <div class="income-desc">滨江区店 | 配送1家门店</div>
+                                    </div>
+                                    <div class="income-amount plus">+36.00</div>
+                                </div>
+                                <div class="income-time">09:20</div>
+                            </div>
+                        </div>
+                        
+                        <div class="income-item">
+                            <div class="income-icon bonus">
+                                <span>🎁</span>
+                            </div>
+                            <div class="income-content">
+                                <div class="income-detail">
+                                    <div>
+                                        <div class="income-title">准时配送奖励</div>
+                                        <div class="income-desc">提前15分钟送达</div>
+                                    </div>
+                                    <div class="income-amount plus">+5.00</div>
+                                </div>
+                                <div class="income-time">09:25</div>
+                            </div>
+                        </div>
+                        
+                        <div class="date-header">
+                            <div>昨天 (3月1日)</div>
+                            <div>收入：¥428.50</div>
+                        </div>
+                        
+                        <div class="income-item">
+                            <div class="income-icon order">
+                                <span>🚚</span>
+                            </div>
+                            <div class="income-content">
+                                <div class="income-detail">
+                                    <div>
+                                        <div class="income-title">配送费 - 订单#SJ20230228095</div>
+                                        <div class="income-desc">拱墅区店 | 配送2家门店</div>
+                                    </div>
+                                    <div class="income-amount plus">+45.00</div>
+                                </div>
+                                <div class="income-time">08:30</div>
+                            </div>
+                        </div>
+                        
+                        <div class="income-item">
+                            <div class="income-icon order">
+                                <span>🚚</span>
+                            </div>
+                            <div class="income-content">
+                                <div class="income-detail">
+                                    <div>
+                                        <div class="income-title">配送费 - 订单#SJ20230228096</div>
+                                        <div class="income-desc">西湖区店 | 配送3家门店</div>
+                                    </div>
+                                    <div class="income-amount plus">+58.00</div>
+                                </div>
+                                <div class="income-time">10:15</div>
+                            </div>
+                        </div>
+                        
+                        <div class="income-item">
+                            <div class="income-icon withdraw">
+                                <span>💰</span>
+                            </div>
+                            <div class="income-content">
+                                <div class="income-detail">
+                                    <div>
+                                        <div class="income-title">提现到微信钱包</div>
+                                        <div class="income-desc">预计24小时内到账</div>
+                                    </div>
+                                    <div class="income-amount minus">-500.00</div>
+                                </div>
+                                <div class="income-time">16:40</div>
+                            </div>
+                        </div>
+                        
+                        <div class="income-item">
+                            <div class="income-icon bonus">
+                                <span>🎁</span>
+                            </div>
+                            <div class="income-content">
+                                <div class="income-detail">
+                                    <div>
+                                        <div class="income-title">高峰时段奖励</div>
+                                        <div class="income-desc">12:00-14:00期间完成3单</div>
+                                    </div>
+                                    <div class="income-amount plus">+15.00</div>
+                                </div>
+                                <div class="income-time">14:30</div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; padding: 15px 0; font-size: 14px; color: var(--primary-color); margin-top: 10px;">
+                            查看更多收入记录
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 联系客服页 -->
+        <div>
+            <div class="screen-title">联系客服页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">45%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">联系客服</div>
+                        <div class="navbar-right"></div>
+                    </div>
+                    <div class="content">
+                        <div class="card" style="margin-bottom: 20px; padding: 20px;">
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <div style="width: 70px; height: 70px; border-radius: 35px; background-color: var(--primary-light); display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                    <span style="font-size: 36px;">👨‍💼</span>
+                                </div>
+                                <div style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">在线客服</div>
+                                <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 15px; text-align: center;">
+                                    服务时间：周一至周日 8:00-22:00
+                                </div>
+                                <button class="btn btn-primary" style="width: 100%;">立即咨询</button>
+                            </div>
+                        </div>
+                        
+                        <div class="customer-service-options">
+                            <div class="cs-option-title">常用联系方式</div>
+                            
+                            <div class="cs-option-item">
+                                <div class="cs-option-icon phone">
+                                    <span>📞</span>
+                                </div>
+                                <div class="cs-option-content">
+                                    <div class="cs-option-name">客服热线</div>
+                                    <div class="cs-option-desc">400-888-8888（免长途费）</div>
+                                </div>
+                                <div class="cs-option-action">拨打</div>
+                            </div>
+                            
+                            <div class="cs-option-item">
+                                <div class="cs-option-icon email">
+                                    <span>📧</span>
+                                </div>
+                                <div class="cs-option-content">
+                                    <div class="cs-option-name">邮件支持</div>
+                                    <div class="cs-option-desc">support@xiaoming.com</div>
+                                </div>
+                                <div class="cs-option-action">发送</div>
+                            </div>
+                            
+                            <div class="cs-option-item">
+                                <div class="cs-option-icon wechat">
+                                    <span>💬</span>
+                                </div>
+                                <div class="cs-option-content">
+                                    <div class="cs-option-name">微信客服</div>
+                                    <div class="cs-option-desc">扫码添加客服微信</div>
+                                </div>
+                                <div class="cs-option-action">查看</div>
+                            </div>
+                        </div>
+                        
+                        <div class="customer-service-options">
+                            <div class="cs-option-title">常见问题</div>
+                            
+                            <div class="cs-faq-item">
+                                <div class="cs-faq-question">
+                                    <span>如何修改我的个人信息？</span>
+                                    <span class="cs-faq-arrow">></span>
+                                </div>
+                            </div>
+                            
+                            <div class="cs-faq-item">
+                                <div class="cs-faq-question">
+                                    <span>配送过程中遇到异常情况怎么办？</span>
+                                    <span class="cs-faq-arrow">></span>
+                                </div>
+                            </div>
+                            
+                            <div class="cs-faq-item">
+                                <div class="cs-faq-question">
+                                    <span>配送费用如何计算？</span>
+                                    <span class="cs-faq-arrow">></span>
+                                </div>
+                            </div>
+                            
+                            <div class="cs-faq-item">
+                                <div class="cs-faq-question">
+                                    <span>提现到账时间是多久？</span>
+                                    <span class="cs-faq-arrow">></span>
+                                </div>
+                            </div>
+                            
+                            <div class="cs-faq-item">
+                                <div class="cs-faq-question">
+                                    <span>如何补充或修改车辆信息？</span>
+                                    <span class="cs-faq-arrow">></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; padding: 20px 0 30px; font-size: 14px; color: var(--primary-color);">
+                            查看全部帮助内容 >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 帮助中心页 -->
+        <div>
+            <div class="screen-title">帮助中心页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">40%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">帮助中心</div>
+                        <div class="navbar-right">
+                            <span style="font-size: 16px;">🔍</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="search-box">
+                            <div class="search-input">
+                                <span class="search-icon">🔍</span>
+                                <input type="text" placeholder="搜索问题">
+                            </div>
+                        </div>
+                        
+                        <div class="quick-help-grid">
+                            <div class="quick-help-item">
+                                <div class="quick-help-icon">
+                                    <span>📋</span>
+                                </div>
+                                <div class="quick-help-name">接单教程</div>
+                            </div>
+                            <div class="quick-help-item">
+                                <div class="quick-help-icon">
+                                    <span>🚗</span>
+                                </div>
+                                <div class="quick-help-name">车辆认证</div>
+                            </div>
+                            <div class="quick-help-item">
+                                <div class="quick-help-icon">
+                                    <span>🔄</span>
+                                </div>
+                                <div class="quick-help-name">操作指南</div>
+                            </div>
+                            <div class="quick-help-item">
+                                <div class="quick-help-icon">
+                                    <span>💰</span>
+                                </div>
+                                <div class="quick-help-name">收入提现</div>
+                            </div>
+                        </div>
+                        
+                        <div class="help-category">
+                            <div class="help-category-title">新手指南</div>
+                            
+                            <div class="help-item">
+                                <div class="help-item-title">如何完成注册和实名认证？</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-item-title">如何添加车辆信息？</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-item-title">如何抢单和接收订单？</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-item-title">配送流程详细说明</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                        </div>
+                        
+                        <div class="help-category">
+                            <div class="help-category-title">账户与安全</div>
+                            
+                            <div class="help-item">
+                                <div class="help-item-title">如何修改登录密码？</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-item-title">忘记密码怎么办？</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-item-title">账号安全保护指南</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                        </div>
+                        
+                        <div class="help-category">
+                            <div class="help-category-title">订单问题</div>
+                            
+                            <div class="help-item">
+                                <div class="help-item-title">无法接单怎么办？</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-item-title">订单配送过程中遇到问题</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-item-title">无法完成订单的处理方法</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-item-title">订单取消规则和责任判定</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                        </div>
+                        
+                        <div class="help-category">
+                            <div class="help-category-title">收入与提现</div>
+                            
+                            <div class="help-item">
+                                <div class="help-item-title">配送费用如何计算？</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-item-title">如何提现到银行卡？</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-item-title">提现失败的原因及解决方法</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-item-title">如何开具发票？</div>
+                                <div class="help-item-arrow">></div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; padding: 20px 0 30px 0; font-size: 14px; color: var(--text-secondary);">
+                            如果没有找到所需帮助，请 <span style="color: var(--primary-color);">联系客服</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 设置页 -->
+        <div>
+            <div class="screen-title">设置页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">35%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">设置</div>
+                        <div class="navbar-right"></div>
+                    </div>
+                    <div class="content">
+                        <div class="settings-group">
+                            <div class="settings-item">
+                                <div class="settings-item-title">账号与安全</div>
+                                <div class="settings-item-arrow">></div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <div class="settings-item">
+                                <div class="settings-item-title">通知设置</div>
+                                <div class="settings-item-arrow">></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-title">声音与振动</div>
+                                <div class="settings-item-arrow">></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-title">隐私设置</div>
+                                <div class="settings-item-arrow">></div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <div class="settings-item">
+                                <div class="settings-item-title">接单设置</div>
+                                <div class="settings-item-arrow">></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-title">导航设置</div>
+                                <div class="settings-item-arrow">></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-title">配送区域设置</div>
+                                <div class="settings-item-arrow">></div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <div class="settings-item">
+                                <div class="settings-item-title">清除缓存</div>
+                                <div class="settings-item-value">36.5MB</div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-title">检查更新</div>
+                                <div class="settings-item-value">当前版本 v2.3.5</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <div class="settings-item">
+                                <div class="settings-item-title">关于我们</div>
+                                <div class="settings-item-arrow">></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-title">用户协议</div>
+                                <div class="settings-item-arrow">></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-title">隐私政策</div>
+                                <div class="settings-item-arrow">></div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <div class="settings-item settings-logout">
+                                <div class="settings-item-title">退出登录</div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; padding: 20px 0 30px; font-size: 12px; color: var(--text-light);">
+                            小明超市云仓配送系统 v2.3.5
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 账号与安全设置页 -->
+        <div>
+            <div class="screen-title">账号与安全设置页</div>
+            <div class="screen-container">
+                <div class="screen">
+                    <div class="status-bar">
+                        <div>9:41</div>
+                        <div>
+                            <span>4G</span>
+                            <span style="margin-left: 5px;">30%</span>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <div class="navbar-left">
+                            <span class="back-icon">←</span>
+                        </div>
+                        <div class="navbar-title">账号与安全</div>
+                        <div class="navbar-right"></div>
+                    </div>
+                    <div class="content">
+                        <div class="settings-group">
+                            <div class="settings-item">
+                                <div class="settings-item-title">手机号</div>
+                                <div class="settings-item-value">138****1234</div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-title">修改登录密码</div>
+                                <div class="settings-item-arrow">></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-title">设置支付密码</div>
+                                <div class="settings-item-arrow">></div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <div class="settings-item">
+                                <div class="settings-item-title">实名认证信息</div>
+                                <div class="settings-item-value">已认证</div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-title">人脸识别</div>
+                                <div class="settings-item-value">已验证</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <div class="settings-item">
+                                <div class="settings-item-title">第三方账号绑定</div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-icon">
+                                    <span style="font-size: 20px;">📱</span>
+                                </div>
+                                <div class="settings-item-title">微信</div>
+                                <div class="settings-item-value">已绑定</div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-icon">
+                                    <span style="font-size: 20px;">📱</span>
+                                </div>
+                                <div class="settings-item-title">支付宝</div>
+                                <div class="settings-item-value">未绑定</div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <div class="settings-item">
+                                <div class="settings-item-title">登录设备管理</div>
+                                <div class="settings-item-arrow">></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-title">异常登录保护</div>
+                                <div class="settings-item-switch on"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-title">指纹登录</div>
+                                <div class="settings-item-switch on"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-title">人脸登录</div>
+                                <div class="settings-item-switch off"></div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; padding: 20px 0 30px; font-size: 13px; color: var(--text-secondary);">
+                            如需注销账号，请<span style="color: var(--primary-color);">联系客服</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="width: 100%; margin-top: 30px; padding: 0 20px; text-align: center;">
+            <p style="margin-bottom: 20px;">© 2023 小明超市云仓配送系统 - 司机端APP原型</p>
+        </div>
+    </div>
+    
+    <script>
+        // 这里可以添加交互逻辑，虽然这只是一个静态原型
+        // 在实际开发中，可以通过JavaScript实现页面切换、表单验证等功能
+    </script>
+</body>
+</html> 
